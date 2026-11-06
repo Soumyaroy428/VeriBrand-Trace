@@ -256,3 +256,4 @@ async def seed_database() -> dict:
         "creator_id": created_users["CREATOR"].id,
         "genesis_hash": genesis_event.event_hash,
     }
+

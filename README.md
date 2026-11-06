@@ -109,3 +109,4 @@ The single source of truth resides in `Docs/`:
 - `INTEGRATIONS.md` — External services, Gemini API boundaries, and privacy gates.
 - `TESTING.md` — Quality assurance strategy, deterministic and AI test fixtures.
 - `DEBUGGING.md` — Troubleshooting and incident response runbook.
+

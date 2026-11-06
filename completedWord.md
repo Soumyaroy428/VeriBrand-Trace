@@ -89,3 +89,35 @@
 - **Testing & Verification:**
   - Built comprehensive in-memory test suite (`tests/test_database.py`) using `mongomock_motor`.
   - Verified 15/15 tests passing across database CRUD, tenant isolation, revision immutability, tamper-evident audit hash chaining, seed script execution, and health endpoints.
+
+---
+
+### 4. Checkpoint 3: Authentication & Workspace RBAC (COMPLETED)
+- **Security & Cryptography (`app/core/security.py`):**
+  - Implemented bcrypt password hashing and constant-time verification using native `bcrypt`.
+  - Implemented JWT token minting and signature verification using `PyJWT` (HS256) with configurable expiration (`ACCESS_TOKEN_EXPIRE_MINUTES`).
+- **Pydantic Validation Schemas (`app/schemas/`):**
+  - `auth.py`: `UserRegisterRequest`, `UserLoginRequest`, `TokenResponse`, `UserSummary`, `UserProfileResponse`, `WorkspaceRoleItem`.
+  - `workspace.py`: `WorkspaceCreateRequest`, `WorkspaceResponse`, `MembershipCreateRequest`, `MembershipResponse`.
+- **FastAPI RBAC & Dependency Injection (`app/core/dependencies.py`):**
+  - `get_current_user`: Bearer JWT decoding, token expiration checks, active user verification.
+  - `require_workspace_role(*allowed_roles)`: Factory dependency enforcing workspace membership, active workspace status, and role validation (`CREATOR`, `REVIEWER`, `GOVERNANCE_ADMIN`) with superuser bypass.
+- **REST Endpoints Implemented & Registered (`app/api/v1/`):**
+  - `POST /api/v1/auth/register`: User registration with duplicate email detection (409 Conflict).
+  - `POST /api/v1/auth/login`: Credential validation, active account verification, JWT issuance.
+  - `GET /api/v1/auth/me`: Profile retrieval with multi-tenant workspace memberships.
+  - `POST /api/v1/auth/logout`: Session termination endpoint.
+  - `GET /api/v1/workspaces`: Multi-tenant workspace listing for authenticated user.
+  - `POST /api/v1/workspaces`: Workspace creation with automatic `GOVERNANCE_ADMIN` role assignment and SHA-256 tamper-evident audit logging.
+  - `GET /api/v1/workspaces/{id}`: Workspace metadata inspection scoped to workspace members.
+  - `GET /api/v1/workspaces/{id}/members`: Workspace membership roster restricted to `GOVERNANCE_ADMIN`.
+  - `POST /api/v1/workspaces/{id}/members`: User invitation/assignment to workspace with RBAC role enforcement and SHA-256 audit chaining.
+- **Frontend Authentication & Multi-Tenant State (`client/`):**
+  - Implemented `AuthContext` (`client/src/context/AuthContext.tsx`) with login, register, logout, active workspace switcher, and one-click demo persona switcher (Alice Creator, Bob Reviewer, Carol Governance Admin).
+  - Built high-contrast, WCAG AA compliant `/login` and `/register` pages (`client/src/app/login/page.tsx`, `client/src/app/register/page.tsx`) without generic AI slop.
+  - Updated responsive `Navbar` (`client/src/components/Navbar.tsx`) with workspace dropdown, role badges (sky, amber, emerald), instant persona switching, and user session menu.
+  - Next.js production build verified: 7/7 static routes generated (`/`, `/_not-found`, `/api/health`, `/login`, `/register`).
+- **Automated Test Suite & Verification:**
+  - Implemented `server/tests/test_auth.py` with 11 automated test cases.
+  - Verified 100% pass rate: 20/20 backend tests passing across `test_database.py`, `test_auth.py`, and `test_health_direct.py`.
+

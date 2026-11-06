@@ -5,7 +5,7 @@ Status labels: `PLANNED` = in Round 1 concept; `SPECIFIED` = detailed in this do
 
 | Feature | Description | Primary role | Priority | Status |
 |---|---|---|---|---|
-| Brand workspace | Tenant/workspace for one brand | Admin | P0 | PLANNED |
+| Brand workspace | Tenant/workspace for one brand with scoped RBAC | Admin | P0 | IMPLEMENTED |
 | Brand Vault | Guidelines, facts, terminology and visual standards | Admin | P0 | PLANNED |
 | Guideline ingestion | Import PDF/Markdown and preserve source references | Admin | P0 | PLANNED |
 | Fact Registry | Approved facts and versioned claim evidence | Admin | P0 | PLANNED |
