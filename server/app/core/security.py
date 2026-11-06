@@ -68,3 +68,4 @@ def decode_token(token: str) -> Dict[str, Any]:
         raise ValueError("Token has expired")
     except jwt.InvalidTokenError as e:
         raise ValueError(f"Invalid token: {e}")
+

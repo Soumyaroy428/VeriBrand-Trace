@@ -32,3 +32,4 @@ class MembershipResponse(BaseModel):
     user_name: Optional[str] = None
     role: str
     created_at: datetime
+

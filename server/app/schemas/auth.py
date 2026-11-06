@@ -40,3 +40,4 @@ class WorkspaceRoleItem(BaseModel):
 class UserProfileResponse(BaseModel):
     user: UserSummary
     workspaces: List[WorkspaceRoleItem]
+

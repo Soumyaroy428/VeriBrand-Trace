@@ -98,3 +98,4 @@ def require_workspace_role(*allowed_roles: str) -> Callable:
         return membership
 
     return _workspace_role_verifier
+

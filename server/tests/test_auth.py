@@ -292,3 +292,4 @@ async def test_logout_endpoint(client: httpx.AsyncClient):
     response = await client.post("/api/v1/auth/logout", headers=headers)
     assert response.status_code == 200
     assert response.json()["status"] == "success"
+

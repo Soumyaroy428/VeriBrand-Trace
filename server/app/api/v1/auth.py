@@ -112,3 +112,4 @@ async def get_current_user_profile(current_user: User = Depends(get_current_user
 async def logout_user(current_user: User = Depends(get_current_user)):
     """Revoke session and acknowledge logout."""
     return {"status": "success", "message": f"Successfully logged out session for {current_user.email}"}
+
