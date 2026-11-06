@@ -1,0 +1,21 @@
+{
+  "name": "veribrand-trace-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VeriBrand Trace - Explainable Pre-Publication Brand Governance & Human-in-the-Loop Diff Platform",
+  "scripts": {
+    "dev:client": "cd client && npm run dev",
+    "build:client": "cd client && npm run build",
+    "lint:client": "cd client && npm run lint",
+    "dev:server": "cd server && uvicorn app.main:app --reload --port 8000",
+    "test:server": "cd server && pytest tests"
+  },
+  "keywords": [
+    "brand-governance",
+    "compliance",
+    "ai-claim-verification",
+    "diff-platform"
+  ],
+  "author": "Team Last of Us",
+  "license": "UNLICENSED"
+}

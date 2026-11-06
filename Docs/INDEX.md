@@ -1,0 +1,17 @@
+# VeriBrand Trace Documentation Index
+
+- [AGENTS.md](AGENTS.md)
+- [API.md](API.md)
+- [ARCHITECTURE.md](ARCHITECTURE.md)
+- [AUTH.md](AUTH.md)
+- [DATABASE.md](DATABASE.md)
+- [DEBUGGING.md](DEBUGGING.md)
+- [DESIGN.md](DESIGN.md)
+- [FEATURES.md](FEATURES.md)
+- [INTEGRATIONS.md](INTEGRATIONS.md)
+- [MCP.md](MCP.md)
+- [PLAN.md](PLAN.md)
+- [PRD.md](PRD.md)
+- [README.md](README.md)
+- [SETUP.md](SETUP.md)
+- [TESTING.md](TESTING.md)
