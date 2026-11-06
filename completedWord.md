@@ -3,7 +3,7 @@
 **Team:** Last of Us  
 **Core Philosophy:** *Suggest, Never Override*  
 **Repository Remote:** `https://github.com/Soumyaroy428/VeriBrand-Trace.git`  
-**Production Frontend URL:** `https://client-mu-taupe.vercel.app`  
+**Dedicated Production Frontend URL:** `https://veribrand-trace.vercel.app`  
 **Current Date:** November 2026  
 
 ---
@@ -123,7 +123,53 @@
 
 ---
 
-### 5. Checkpoint 4: Brand Vault (COMPLETED)
+### 6. Checkpoint 5: Content Upload & Privacy Gate (COMPLETED, COMMITTED & DEPLOYED)
+- **Secure File Storage & Signature Validation (`server/app/services/storage.py`):**
+  - Binary magic byte validation preventing MIME/extension spoofing:
+    - PDF (`%PDF-`), PNG (`\x89PNG\r\n\x1a\n`), JPEG (`\xff\xd8\xff`), DOCX (`PK\x03\x04`), and valid UTF-8/ASCII plain text.
+    - Path traversal attack prevention and filename sanitization.
+    - File size limit enforcement (max 10MB per document/image).
+    - Cryptographic SHA-256 content hashing for immutability and file integrity verification.
+    - Workspace-isolated storage paths (`server/uploads/{workspace_id}/...`).
+- **Text Extraction & Image Normalization (`server/app/services/extractor.py`):**
+  - High-precision text extraction from TXT, DOCX (`python-docx`), and PDF (`pypdf`).
+  - Image normalization and metadata inspection (`Pillow`) for PNG/JPG images (width, height, aspect ratio, color mode).
+  - Clean paragraph, table cell, and page separation.
+- **Privacy Gate & PII Redaction Service (`server/app/services/privacy.py`):**
+  - High-precision regex pattern detection and token replacement:
+    - Emails (`[REDACTED_EMAIL]`)
+    - Phone numbers (`[REDACTED_PHONE]`)
+    - Social Security Numbers (`[REDACTED_SSN]`)
+    - Credit Card numbers (`[REDACTED_CREDIT_CARD]`)
+    - IPv4 addresses (`[REDACTED_IP_ADDRESS]`)
+  - Deterministic Confidential Project Terms Masking:
+    - User-defined and workspace codenames (e.g., `Project Titan`, `FalconCore`) masked into indexed tokens (`[CONFIDENTIAL_PROJECT_1]`, `[CONFIDENTIAL_PROJECT_2]`).
+    - Generates structured `PrivacyGateReport` tracking clean status (`PASSED` vs `SANITIZED`), redacted items, and secure mapping tables.
+  - Core philosophy enforced: Raw original text is immutably preserved in database revisions for authorized human reviewers, while sanitized text is delivered to external AI models and vector databases.
+- **Submissions & Revisions API Endpoints (`server/app/api/v1/submissions.py`):**
+  - `POST /workspaces/{id}/submissions`: Unified multipart form file upload and direct JSON text submission endpoint.
+  - `GET /workspaces/{id}/submissions`: Paginated submission archive listing with latest revision data.
+  - `GET /submissions/{id}`: Detailed submission inspection with full revision history.
+  - `GET /submissions/{id}/revisions`: Revisions list.
+  - `POST /submissions/{id}/revisions`: Incremental revision creator (v2, v3) applying Privacy Gate to updated drafts.
+  - `GET /submissions/{id}/revisions/{rev_id}/file`: Raw file download with SHA-256 ETag integrity verification.
+  - All operations append an immutable `AuditEvent` with SHA-256 cryptographic hash chaining.
+- **Frontend Submissions & Privacy Gate Interface (`client/`):**
+  - **Submissions Dashboard (`client/src/app/audits/page.tsx`):**
+    - Submission pipeline table with format icons, revision pills (`v1`, `v2`), Privacy Gate badges (`PII Redacted` vs `Clean`), and governance status.
+    - Interactive Privacy Gate Inspection Modal: displays side-by-side sanitized text vs original content, redacted PII items, and masked project codenames.
+  - **New Submission Studio (`client/src/app/audits/new/page.tsx`):**
+    - Drag-and-drop file upload zone (TXT, DOCX, PDF, PNG, JPG) with file size validation.
+    - Direct text editor tab with live character and word counters.
+    - Interactive confidential project codename manager (add/remove tokens).
+    - Real-time client-side Privacy Gate Pre-Scan Banner detailing PII findings and sanitized prompt preview before submission.
+  - Next.js production build verified: **10/10 static routes generated cleanly**.
+- **Automated Test Suite & Verification (`server/tests/test_upload_privacy.py`):**
+  - 10 automated test cases: file signature validation, size limit enforcement, text & docx extraction, image metadata, PII scrubbing (emails, phones, SSNs, credit cards, IPs), confidential codename masking, clean text passing, submission creation with audit chaining, multipart file upload & download with byte-level hash verification, and cross-workspace isolation.
+  - Unified backend test suite: **44/44 tests passing (100% pass rate)**.
+- **Vercel Production Deployment:**
+  - Deployed to dedicated project: `https://veribrand-trace.vercel.app` (Verified HTTP 200 OK on `/audits` and `/audits/new`).
+
 - **Guideline Document Ingestion & Chunking (`server/app/api/v1/brand_vault.py`):**
   - Implemented guideline document registration with SHA-256 content hashing (`GuidelineDocument`).
   - Automated paragraph chunking generating vector evidence passages (`GuidelineChunk`) with token count and section headings.

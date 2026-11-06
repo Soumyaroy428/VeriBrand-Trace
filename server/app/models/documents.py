@@ -220,6 +220,8 @@ class SubmissionRevision(Document):
     storage_key: Optional[str] = None
     content_hash: str
     extracted_text: Optional[str] = None
+    sanitized_text: Optional[str] = None
+    privacy_gate_metadata: Optional[Dict[str, Any]] = None
     raw_content: Optional[str] = None
     created_by: str
     created_at: datetime = Field(default_factory=utc_now)

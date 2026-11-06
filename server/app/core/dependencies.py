@@ -1,6 +1,6 @@
 """FastAPI dependency injection for authentication and workspace RBAC enforcement."""
 
-from typing import Callable, Sequence
+from typing import Callable, Sequence, Any, List, Union
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from app.core.security import decode_token
@@ -40,12 +40,19 @@ async def get_current_user(
     return user
 
 
-def require_workspace_role(*allowed_roles: str) -> Callable:
+def require_workspace_role(*allowed_roles: Any) -> Callable:
     """Enforces that the current authenticated user belongs to the requested workspace
-
     and possesses one of the authorized roles (CREATOR, REVIEWER, GOVERNANCE_ADMIN).
     Superusers automatically bypass workspace membership checks.
+    Supports either positional args ("ROLE1", "ROLE2") or a single list (["ROLE1", "ROLE2"]).
     """
+    flat_roles: List[str] = []
+    for r in allowed_roles:
+        if isinstance(r, (list, tuple)):
+            flat_roles.extend(r)
+        else:
+            flat_roles.append(r)
+
     async def _workspace_role_verifier(
         workspace_id: str,
         current_user: User = Depends(get_current_user),
@@ -84,13 +91,13 @@ def require_workspace_role(*allowed_roles: str) -> Callable:
             )
 
         # Enforce Role-Based Access Control
-        if allowed_roles and membership.role not in allowed_roles:
+        if flat_roles and membership.role not in flat_roles:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail={
                     "error": {
                         "code": "INSUFFICIENT_PERMISSIONS",
-                        "message": f"Action requires one of {allowed_roles}. Your current role is {membership.role}.",
+                        "message": f"Action requires one of {flat_roles}. Your current role is {membership.role}.",
                     }
                 },
             )

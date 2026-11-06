@@ -48,6 +48,11 @@ wheels/
 .env.test.local
 .env.production.local
 *.env
+
+# Uploads & User Files
+uploads/
+server/uploads/
+.vercel
 !.env.example
 !.env.local.example
 
