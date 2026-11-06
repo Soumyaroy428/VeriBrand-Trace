@@ -34,3 +34,4 @@ async def check_health() -> HealthCheckResponse:
             "database": "configured",
         }
     )
+

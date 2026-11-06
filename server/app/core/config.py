@@ -1,7 +1,7 @@
 """Application configuration and environment settings via Pydantic Settings."""
 
 from typing import List
-from pydantic import AnyHttpUrl, field_validator
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -20,8 +20,12 @@ class Settings(BaseSettings):
         "http://127.0.0.1:3000",
     ]
     
-    # Database
-    DATABASE_URL: str = "postgresql+psycopg://postgres:postgres@localhost:5432/veribrand"
+    # MongoDB Database Configuration
+    MONGODB_URL: str = "mongodb://localhost:27017"
+    MONGODB_DB_NAME: str = "veribrand_trace"
+    
+    # Relational Database (Optional fallback)
+    DATABASE_URL: str = "sqlite:///./veribrand.db"
     
     # JWT & Auth
     JWT_SECRET: str = "super-secret-development-key-change-in-production-min-32-chars"
@@ -33,8 +37,7 @@ class Settings(BaseSettings):
     GEMINI_MODEL: str = "gemini-2.5-flash"
     
     # Vector Retrieval
-    VECTOR_STORE_PROVIDER: str = "pgvector"
-    VECTOR_DATABASE_URL: str = ""
+    VECTOR_STORE_PROVIDER: str = "mongodb_atlas"
     
     # Storage
     PRIVATE_STORAGE_PATH: str = "./uploads"

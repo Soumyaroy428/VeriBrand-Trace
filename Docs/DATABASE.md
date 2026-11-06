@@ -1,9 +1,11 @@
 # Database Design
 ## VeriBrand Trace
 
-**Database from source plan:** PostgreSQL (Supabase)  
-**ORM from source plan:** SQLAlchemy  
-**Vector store:** ChromaDB or pgvector (select one)
+**Database Architecture:** MongoDB with Beanie ODM & Motor Async Driver (User-Directed Architecture Decision)  
+**Historical / Alternative:** PostgreSQL (Supabase) + SQLAlchemy  
+**Vector store:** MongoDB Atlas Vector Search (or ChromaDB)  
+
+> **Architecture Decision Record (ADR-002):** By user directive in Checkpoint 2, the primary persistence engine is configured for MongoDB using `motor` and `beanie` (built on Pydantic v2). All 18 entities are implemented as Beanie Document collections with workspace isolation, compound indexes, and cryptographic SHA-256 hash chaining on audit events. Environment credentials (`MONGODB_URL`) are configured to be provided manually by the user.
 
 ## 1. Design rules
 - Use UUID primary keys.

@@ -37,3 +37,4 @@ async def run_checks():
 
 if __name__ == "__main__":
     asyncio.run(run_checks())
+
