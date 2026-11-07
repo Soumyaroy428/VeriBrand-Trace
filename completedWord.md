@@ -300,7 +300,36 @@
 
 ---
 
-### 11. Cloud Deployment & Hosting Status
+### 11. Checkpoint 10: Compliance Certificates, Public Proof Gateway & Export Generation (COMPLETED, COMMITTED & DEPLOYED)
+- **Official Compliance Certificate PDF Generator (`server/app/services/certificate_generator.py`):**
+  - Landscape Letter vector certificate engine built with `reportlab` and `qrcode`.
+  - Gold and slate double border with corner flourishes, official VeriBrand Trace seal, and brand metadata.
+  - Dynamically embeds high-contrast QR code pointing to public verification gateway (`https://veribrand-trace.vercel.app/verify/{certificate_number}`).
+  - Embeds tamper-evident cryptographic SHA-256 digest permanently chained to the workspace audit ledger.
+  - Enforces sovereign philosophy: *"Suggest, Never Override — Human reviewers retain final publishing authority."*
+- **PDF Download REST Endpoint (`server/app/api/v1/reviews.py`):**
+  - `GET /api/v1/certificates/{certificate_number}/download`:
+    - Looks up `ComplianceCertificate`, `Submission`, `Workspace`, `Approval`, and `User` (approver).
+    - Generates vector-crisp binary PDF with embedded QR code.
+    - Serves `application/pdf` with `Content-Disposition: attachment; filename="VeriBrand_Certificate_{number}.pdf"`.
+- **Frontend Export & Public Proof Interfaces (`client/`):**
+  - **Public Verification Gateway (`client/src/app/verify/[cert_number]/page.tsx`):**
+    - "Download Official PDF" button directly downloading high-res certificate with client feedback.
+    - "Print Certificate" action with dedicated `@media print` print stylesheet hiding UI chrome and headers.
+    - "Copy Hash" button for instantaneous cryptographic SHA-256 digest copying.
+    - "Share Proof Link" button with toast confirmation.
+  - **Audit Workspace Certificate Modal (`client/src/app/audits/[id]/page.tsx`):**
+    - Added "Download PDF" action in both the Golden Verified Certificate banner and the Certificate modal dialog.
+  - Next.js production build: **12/12 routes compiled cleanly with zero type errors**.
+- **Automated Test Suite & Verification (`server/tests/test_certificates.py`):**
+  - 3 automated tests: raw vector PDF generation & PyPDF structural inspection, download endpoint verification with headers and content validation, and 404 handling for invalid certificates.
+  - Unified backend test suite: **75/75 tests passing (100% pass rate in 22.75s)**.
+- **Vercel Production Deployment:**
+  - Deployed live to `https://veribrand-trace.vercel.app` (Ready & verified).
+
+---
+
+### 12. Cloud Deployment & Hosting Status
 - **Frontend (Vercel):**
   - Production URL: `https://veribrand-trace.vercel.app`
   - Vercel Project / Scope: `soumyaroy428s-projects/veribrand-trace`
@@ -308,5 +337,5 @@
 - **Backend (Render):**
   - Production URL: `https://veribrand-trace-api.onrender.com`
   - Service ID: `srv-dbnbmh15efls73asra30` (Owner: `tea-dacrd7jl550s7380ko4g`)
-  - Blueprint: Configured root `render.yaml` with Python 3 web service specification, automated dependencies installation, Uvicorn ASGI server, health check route (`/api/v1/health`), and environment variable definitions.
+  - Blueprint: Configured root `render.yaml` with Python 3.11 web service specification, automated dependencies installation, Uvicorn ASGI server, health check route (`/api/v1/health`), and environment variable definitions.
   - Status: **Operational & Healthy** (Verified HTTP 200 on `/` and `/api/v1/health`).

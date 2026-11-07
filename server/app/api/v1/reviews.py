@@ -6,7 +6,7 @@ import uuid
 from datetime import datetime, timezone
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status, Response
 
 from app.core.dependencies import get_current_user
 from app.models.documents import (
@@ -733,6 +733,56 @@ async def verify_certificate_authenticity(certificate_number: str):
         decided_by_email=approver.email if approver else "Unknown Approver",
         issued_at=cert.issued_at,
         tamper_evident_verified=is_valid,
+    )
+
+
+@router.get(
+    "/certificates/{certificate_number}/download",
+    summary="Download officially sealed PDF compliance certificate with embedded QR code",
+)
+async def download_certificate_pdf(certificate_number: str):
+    cert = await ComplianceCertificate.find_one(
+        ComplianceCertificate.certificate_number == certificate_number
+    )
+    if not cert:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Certificate '{certificate_number}' does not exist or has been revoked.",
+        )
+
+    approval = await Approval.get(cert.approval_id)
+    submission = await Submission.get(cert.submission_id)
+    workspace = await Workspace.get(cert.workspace_id)
+    approver = await User.get(approval.decided_by) if approval else None
+
+    # Generate vector PDF bytes with embedded QR code
+    from app.services.certificate_generator import generate_compliance_certificate_pdf
+
+    readiness_score = approval.readiness_score_at_approval if approval else 90
+    approver_name = (approver.full_name or "Authorized Brand Reviewer") if approver else "Authorized Reviewer"
+    approver_email = approver.email if approver else "reviewer@veribrand.io"
+
+    pdf_bytes = generate_compliance_certificate_pdf(
+        certificate_number=cert.certificate_number,
+        certificate_hash=cert.certificate_hash,
+        submission_title=submission.title if submission else "Corporate Asset Publication",
+        workspace_name=workspace.name if workspace else "Enterprise Brand Workspace",
+        readiness_score=readiness_score,
+        approver_name=approver_name,
+        approver_email=approver_email,
+        issued_at=cert.issued_at,
+        verification_url=f"https://veribrand-trace.vercel.app/verify/{cert.certificate_number}",
+        metadata_json=cert.metadata_json,
+    )
+
+    filename = f"VeriBrand_Certificate_{cert.certificate_number}.pdf"
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"',
+            "Content-Type": "application/pdf",
+        },
     )
 
 

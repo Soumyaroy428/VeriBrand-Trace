@@ -38,6 +38,8 @@ import {
   Calendar,
   User,
   Share2,
+  Download,
+  Printer,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/context/AuthContext";
@@ -146,6 +148,7 @@ export default function SubmissionAuditView() {
   const submissionId = params.id as string;
   const router = useRouter();
   const { token, activeWorkspace, user } = useAuth();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://veribrand-trace-api.onrender.com/api/v1";
 
   const [auditRun, setAuditRun] = useState<AuditRun | null>(null);
   const [findings, setFindings] = useState<Finding[]>([]);
@@ -864,14 +867,25 @@ export default function SubmissionAuditView() {
                 View Certificate
               </button>
               {certificate?.certificate_number && (
-                <Link
-                  href={`/verify/${certificate.certificate_number}`}
-                  target="_blank"
-                  className="inline-flex items-center px-3.5 py-2 bg-slate-800 text-slate-200 border border-slate-700 font-semibold rounded-lg text-xs hover:bg-slate-700 transition"
-                >
-                  <ExternalLink className="w-3.5 h-3.5 mr-1.5 text-teal-400" />
-                  Public Proof
-                </Link>
+                <>
+                  <a
+                    href={`${apiUrl}/certificates/${certificate.certificate_number}/download`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-3.5 py-2 bg-slate-800 text-slate-200 border border-slate-700 font-semibold rounded-lg text-xs hover:bg-slate-700 transition"
+                  >
+                    <Download className="w-3.5 h-3.5 mr-1.5 text-teal-400" />
+                    Download PDF
+                  </a>
+                  <Link
+                    href={`/verify/${certificate.certificate_number}`}
+                    target="_blank"
+                    className="inline-flex items-center px-3.5 py-2 bg-slate-800 text-slate-200 border border-slate-700 font-semibold rounded-lg text-xs hover:bg-slate-700 transition"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 mr-1.5 text-teal-400" />
+                    Public Proof
+                  </Link>
+                </>
               )}
             </div>
           </div>
@@ -1752,16 +1766,29 @@ export default function SubmissionAuditView() {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-                {certificate?.certificate_number && (
-                  <Link
-                    href={`/verify/${certificate.certificate_number}`}
-                    target="_blank"
-                    className="inline-flex items-center text-xs font-semibold text-teal-400 hover:text-teal-300"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5 mr-1" />
-                    Open Public Verification Page
-                  </Link>
-                )}
+                <div className="flex items-center space-x-2">
+                  {certificate?.certificate_number && (
+                    <>
+                      <a
+                        href={`${apiUrl}/certificates/${certificate.certificate_number}/download`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-3 py-1.5 bg-slate-900 text-teal-400 border border-slate-700 hover:border-teal-500/50 rounded-lg text-xs font-semibold transition"
+                      >
+                        <Download className="w-3.5 h-3.5 mr-1.5" />
+                        Download PDF
+                      </a>
+                      <Link
+                        href={`/verify/${certificate.certificate_number}`}
+                        target="_blank"
+                        className="inline-flex items-center text-xs font-semibold text-slate-400 hover:text-white px-2 py-1.5"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5 mr-1" />
+                        Public Proof
+                      </Link>
+                    </>
+                  )}
+                </div>
                 <button
                   onClick={() => setIsCertModalOpen(false)}
                   className="w-full sm:w-auto px-5 py-2 bg-teal-500 text-slate-950 rounded-xl text-xs font-bold hover:bg-teal-400 transition"
