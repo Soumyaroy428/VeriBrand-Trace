@@ -6,7 +6,7 @@ services:
     region: oregon
     rootDir: server
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-10000}
+    startCommand: python start.py
     healthCheckPath: /api/v1/health
     envVars:
       - key: APP_NAME
