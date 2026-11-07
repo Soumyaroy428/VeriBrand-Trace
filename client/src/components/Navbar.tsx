@@ -78,22 +78,22 @@ export default function Navbar() {
               <span>Brand Vault</span>
             </Link>
             <Link
-              href="/review-queue"
+              href="/review"
               className={`px-3 py-1.5 rounded-md transition flex items-center space-x-1.5 ${
-                pathname.startsWith("/review-queue") ? "text-slate-950 bg-slate-100 font-semibold" : "hover:text-slate-900 hover:bg-slate-50"
+                pathname.startsWith("/review") ? "text-slate-950 bg-slate-100 font-semibold" : "hover:text-slate-900 hover:bg-slate-50"
               }`}
             >
               <History className="h-4 w-4 text-slate-400" />
               <span>Review Queue</span>
             </Link>
             <Link
-              href="/analytics"
+              href="/governance"
               className={`px-3 py-1.5 rounded-md transition flex items-center space-x-1.5 ${
-                pathname.startsWith("/analytics") ? "text-slate-950 bg-slate-100 font-semibold" : "hover:text-slate-900 hover:bg-slate-50"
+                pathname.startsWith("/governance") ? "text-slate-950 bg-slate-100 font-semibold" : "hover:text-slate-900 hover:bg-slate-50"
               }`}
             >
               <BarChart3 className="h-4 w-4 text-slate-400" />
-              <span>Analytics</span>
+              <span>Governance</span>
             </Link>
           </nav>
         </div>

@@ -263,11 +263,48 @@
 
 ---
 
-### 10. Cloud Deployment & Hosting Status
+### 10. Checkpoint 9: Reviewer Sign-Off & Governance Approval (COMPLETED, COMMITTED & DEPLOYED)
+- **Reviewer Queue & Action Engine (`server/app/api/v1/reviews.py`):**
+  - `GET /api/v1/workspaces/{workspace_id}/reviews/queue`: Worklist endpoint returning all pending and change-requested submissions with latest Brand Readiness Scores, severity counts, and creator metadata.
+  - `POST /api/v1/submissions/{id}/comments` & `GET /api/v1/submissions/{id}/comments`: Full inline review discussion thread with author identities, anchor line references, and audit logging (`COMMENT_ADDED`).
+  - `POST /api/v1/exceptions/{id}/decide`: Reviewer exception decision endpoint (Approve/Reject) updating finding status to `EXCEPTION_APPROVED` or `EXCEPTION_REJECTED` and dynamically recalculating the Brand Readiness Score for the latest audit run.
+  - `POST /api/v1/submissions/{id}/approve`: Formal reviewer approval endpoint enforcing:
+    1. *Creator self-approval restriction:* Creators cannot approve their own submissions (HTTP 403 Forbidden).
+    2. *Readiness threshold rule:* Requires score $\ge 85\%$ or approved exceptions for remaining critical/high findings.
+    3. *Compliance Certificate Issuance:* Automatically mints a cryptographic `ComplianceCertificate` with unique number and deterministic SHA-256 hash.
+    4. *Tamper-evident audit chaining:* Records SHA-256 chained `SUBMISSION_APPROVED` and `COMPLIANCE_CERTIFICATE_ISSUED` audit events.
+  - `POST /api/v1/submissions/{id}/reject`: Formal rejection / request changes endpoint requiring justification notes and logging `SUBMISSION_REJECTED`.
+  - `GET /api/v1/certificates/{certificate_number}/verify`: Publicly accessible cryptographic verification endpoint re-computing SHA-256 hash against approval records without requiring auth.
+  - `GET /api/v1/workspaces/{workspace_id}/governance/insights`: Aggregate analytics engine computing approval throughput, average readiness score, recurring violation categories, and top 5 violated brand guidelines.
+- **Frontend Governance & Sign-Off Interfaces (`client/`):**
+  - **Reviewer Queue Page (`client/src/app/review/page.tsx`):**
+    - Submission worklist table with status filters (`PENDING_REVIEW`, `NEEDS_CHANGES`, `ALL`), search bar, readiness score badges, violation distribution pills, and direct "Review & Decide" links.
+  - **Audit Workspace Sign-Off Integration (`client/src/app/audits/[id]/page.tsx`):**
+    - Reviewer Governance Action Panel with "Approve & Issue Certificate" and "Request Changes" triggers.
+    - Creator self-approval restriction warning banner.
+    - Reviewer discussion thread tab (`Review Discussion`) with author tags, timestamps, and comment composer.
+    - Exception approval and rejection action buttons directly in traceable violation cards.
+    - Golden Verified Compliance Certificate ribbon and modal with seal, score, and public proof link.
+  - **Public Verification Page (`client/src/app/verify/[cert_number]/page.tsx`):**
+    - Public authenticity card validating cryptographic SHA-256 hashes, approver identity, submission title, and date of issuance.
+  - **Governance Insights Dashboard (`client/src/app/governance/page.tsx`):**
+    - Overview metrics (Audited Submissions, Approval Rate, Avg Score, Active Exceptions).
+    - Recurring violation category distribution bars (Terminology, Facts, AI Drift, Color, Contrast).
+    - Top Violated Guidelines & Ambiguity Detection table with actionable governance recommendations.
+    - Tamper-Evident SHA-256 Ledger status indicator.
+- **Automated Test Suite & Verification (`server/tests/test_reviewer_approval.py`):**
+  - 8 automated tests covering queue retrieval, comments CRUD, exception approval with score recalculation, creator self-approval rejection (403), reviewer approval with certificate issuance and audit chaining, reviewer rejection workflow, public certificate verification, and governance insights aggregation.
+  - Unified backend test suite: **72/72 tests passing (100% pass rate in 22.75s)**.
+- **Vercel Production Deployment:**
+  - Deployed to dedicated project: `https://veribrand-trace.vercel.app` (All 12 Next.js routes active, Verified HTTP 200 OK).
+
+---
+
+### 11. Cloud Deployment & Hosting Status
 - **Frontend (Vercel):**
   - Production URL: `https://veribrand-trace.vercel.app`
   - Vercel Project / Scope: `soumyaroy428s-projects/veribrand-trace`
-  - Status: **Ready & Live** (All 10 Next.js routes active, including `/brand-vault`, `/audits`, `/audits/new`, `/audits/[id]`)
+  - Status: **Ready & Live** (All 12 Next.js routes active: `/`, `/audits`, `/audits/new`, `/audits/[id]`, `/brand-vault`, `/review`, `/governance`, `/verify/[cert_number]`, `/login`, `/register`, `/api/health`)
 - **Backend (Render):**
   - Production URL: `https://veribrand-trace-api.onrender.com`
   - Service ID: `srv-dbnbmh15efls73asra30` (Owner: `tea-dacrd7jl550s7380ko4g`)

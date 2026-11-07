@@ -41,11 +41,16 @@ def compute_readiness_score(findings: List[Finding]) -> int:
 
     Formula:
     Score = max(0, 100 - (25 * N_crit) - (10 * N_high) - (5 * N_med) - (1 * N_low))
+    Active findings (not RESOLVED, EXCEPTION_APPROVED, or ACCEPTED) deduct points.
     """
-    crit_count = sum(1 for f in findings if f.severity == "CRITICAL")
-    high_count = sum(1 for f in findings if f.severity == "HIGH")
-    med_count = sum(1 for f in findings if f.severity == "MEDIUM")
-    low_count = sum(1 for f in findings if f.severity == "LOW")
+    active_findings = [
+        f for f in findings
+        if getattr(f, "status", "OPEN") not in ["RESOLVED", "EXCEPTION_APPROVED", "ACCEPTED"]
+    ]
+    crit_count = sum(1 for f in active_findings if f.severity == "CRITICAL")
+    high_count = sum(1 for f in active_findings if f.severity == "HIGH")
+    med_count = sum(1 for f in active_findings if f.severity == "MEDIUM")
+    low_count = sum(1 for f in active_findings if f.severity == "LOW")
 
     deductions = (crit_count * 25) + (high_count * 10) + (med_count * 5) + (low_count * 1)
     score = max(0, 100 - deductions)
