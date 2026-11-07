@@ -16,6 +16,7 @@ import {
   Plus,
   Eye,
   FileCheck,
+  Sparkles,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
@@ -38,7 +39,12 @@ export default function NewSubmissionPage() {
 
   // Client-side quick privacy preview for instant feedback
   const previewSanitization = useMemo(() => {
-    const raw = mode === "TEXT" ? textContent : file ? `[Document: ${file.name} (${(file.size / 1024).toFixed(1)} KB)]` : "";
+    const raw =
+      mode === "TEXT"
+        ? textContent
+        : file
+        ? `[Document: ${file.name} (${(file.size / 1024).toFixed(1)} KB)]`
+        : "";
     if (!raw) return { text: "", piiCount: 0, termsCount: 0 };
 
     let sanitized = raw;
@@ -99,6 +105,14 @@ export default function NewSubmissionPage() {
         setTitle(selected.name.replace(/\.[^/.]+$/, ""));
       }
     }
+  };
+
+  const loadSampleCopy = () => {
+    setMode("TEXT");
+    setTitle("Q3 Sustainability Launch Press Release");
+    setTextContent(
+      "Our new FalconCore cloud infrastructure reduces carbon emissions by 40% across all enterprise nodes. For media inquiries contact press-relations@veribrand.io or direct queries to Sarah at +1 (555) 019-2834 regarding Project Titan."
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -165,8 +179,7 @@ export default function NewSubmissionPage() {
       setTimeout(() => {
         router.push("/audits");
       }, 1200);
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Failed to create submission";
+    } catch {
       // In offline/demo mode, simulate successful creation
       setSuccessMsg("Demo Mode: Submission processed by Privacy Gate. Redirecting to submissions...");
       setTimeout(() => {
@@ -178,98 +191,127 @@ export default function NewSubmissionPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8">
       {/* Navigation Breadcrumb */}
-      <div className="flex items-center space-x-2 text-xs font-medium text-slate-500">
-        <Link href="/audits" className="hover:text-slate-800 transition">
+      <div className="flex items-center space-x-2 text-xs font-mono text-slate-400">
+        <Link href="/audits" className="hover:text-teal-400 transition">
           Submissions
         </Link>
         <span>/</span>
-        <span className="text-slate-900 font-semibold">New Submission</span>
+        <span className="text-teal-400 font-semibold">New Submission</span>
       </div>
 
       {/* Page Header */}
-      <div className="border-b border-slate-200 pb-6">
-        <div className="flex items-center space-x-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded border border-teal-200">
-            Privacy Gate Protected
-          </span>
-          <span className="text-xs text-slate-500">
-            Active Workspace: {activeWorkspace?.workspace_name || "Global Brand Workspace"}
-          </span>
+      <div className="border-b border-slate-800 pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center space-x-2">
+            <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-teal-300 bg-teal-500/10 px-2.5 py-0.5 rounded border border-teal-500/30">
+              Privacy Gate Protected
+            </span>
+            <span className="text-xs text-slate-400 font-mono">
+              Workspace: {activeWorkspace?.workspace_name || "Global Brand Workspace"}
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mt-2">
+            Submit Asset for Brand Verification
+          </h1>
+          <p className="text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
+            Upload marketing copy, product specs, or creative assets. All content is scrubbed by the Privacy Gate before AI evaluation or pgvector indexing.
+          </p>
         </div>
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 mt-2">
-          Submit Content for Brand Verification
-        </h1>
-        <p className="text-sm text-slate-600 mt-1.5 max-w-3xl leading-relaxed">
-          Upload marketing copy, product specifications, or visual assets. All content is protected by the VeriBrand Privacy Gate: sensitive PII is automatically scrubbed and confidential codenames masked before external AI verification or vector indexing.
-        </p>
+
+        {/* Quick Sample Loader */}
+        <button
+          type="button"
+          onClick={loadSampleCopy}
+          className="self-start md:self-auto px-3.5 py-2 rounded-xl bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 border border-teal-500/30 text-xs font-semibold flex items-center gap-1.5 transition shrink-0"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-teal-400" />
+          <span>Load Sample Copy</span>
+        </button>
       </div>
 
       {errorMsg && (
-        <div className="p-4 rounded-xl bg-red-50 border border-red-200 flex items-start space-x-3 text-red-900 text-sm">
-          <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-start space-x-3 text-rose-300 text-sm">
+          <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
           <span>{errorMsg}</span>
         </div>
       )}
 
       {successMsg && (
-        <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex items-start space-x-3 text-emerald-900 text-sm">
-          <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-start space-x-3 text-emerald-300 text-sm">
+          <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
           <span>{successMsg}</span>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title & Mode Selection */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+        <div className="bg-[#0e1320] p-6 rounded-2xl border border-slate-800 shadow-xl space-y-6">
           <div>
-            <label className="block text-sm font-semibold text-slate-900 mb-2">
-              Submission Title <span className="text-red-500">*</span>
+            <label className="block text-xs font-mono font-semibold uppercase tracking-wider text-slate-300 mb-2">
+              Submission Title <span className="text-rose-400">*</span>
             </label>
             <input
               type="text"
               placeholder="e.g. Q4 Global Sustainability Campaign Hero Copy"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900"
+              className="w-full px-4 py-2.5 text-sm bg-[#080c14] text-white border border-slate-700 rounded-xl focus:outline-none focus:border-teal-500/60 font-sans transition"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-slate-900 mb-2">
+            <label className="block text-xs font-mono font-semibold uppercase tracking-wider text-slate-300 mb-2">
               Input Mode
             </label>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setMode("FILE")}
-                className={`p-4 rounded-xl border text-left transition flex items-center space-x-3 ${
+                className={`p-4 rounded-xl border text-left transition flex items-center space-x-3.5 ${
                   mode === "FILE"
-                    ? "border-slate-900 bg-slate-50 ring-1 ring-slate-900"
-                    : "border-slate-200 hover:border-slate-300 bg-white"
+                    ? "border-teal-500/50 bg-teal-500/10 shadow-[0_0_15px_rgba(20,184,166,0.1)]"
+                    : "border-slate-800 bg-[#141b2d]/60 hover:bg-[#141b2d] hover:border-slate-700"
                 }`}
               >
-                <UploadCloud className="w-5 h-5 text-slate-700" />
+                <div
+                  className={`p-2 rounded-lg ${
+                    mode === "FILE"
+                      ? "bg-teal-500/20 text-teal-300"
+                      : "bg-slate-800 text-slate-400"
+                  }`}
+                >
+                  <UploadCloud className="w-5 h-5" />
+                </div>
                 <div>
-                  <p className="text-sm font-semibold text-slate-900">Upload File</p>
-                  <p className="text-xs text-slate-500">TXT, DOCX, PDF, PNG, JPG (up to 10MB)</p>
+                  <p className="text-sm font-bold text-white">Upload File</p>
+                  <p className="text-xs text-slate-400">TXT, DOCX, PDF, PNG, JPG (up to 10MB)</p>
                 </div>
               </button>
+
               <button
                 type="button"
                 onClick={() => setMode("TEXT")}
-                className={`p-4 rounded-xl border text-left transition flex items-center space-x-3 ${
+                className={`p-4 rounded-xl border text-left transition flex items-center space-x-3.5 ${
                   mode === "TEXT"
-                    ? "border-slate-900 bg-slate-50 ring-1 ring-slate-900"
-                    : "border-slate-200 hover:border-slate-300 bg-white"
+                    ? "border-teal-500/50 bg-teal-500/10 shadow-[0_0_15px_rgba(20,184,166,0.1)]"
+                    : "border-slate-800 bg-[#141b2d]/60 hover:bg-[#141b2d] hover:border-slate-700"
                 }`}
               >
-                <FileText className="w-5 h-5 text-slate-700" />
+                <div
+                  className={`p-2 rounded-lg ${
+                    mode === "TEXT"
+                      ? "bg-teal-500/20 text-teal-300"
+                      : "bg-slate-800 text-slate-400"
+                  }`}
+                >
+                  <FileText className="w-5 h-5" />
+                </div>
                 <div>
-                  <p className="text-sm font-semibold text-slate-900">Direct Text Editor</p>
-                  <p className="text-xs text-slate-500">Paste or write marketing copy directly</p>
+                  <p className="text-sm font-bold text-white">Direct Text Editor</p>
+                  <p className="text-xs text-slate-400">Paste marketing claims directly</p>
                 </div>
               </button>
             </div>
@@ -278,10 +320,10 @@ export default function NewSubmissionPage() {
           {/* Mode 1: File Upload Dropzone */}
           {mode === "FILE" ? (
             <div className="space-y-3">
-              <label className="block text-sm font-semibold text-slate-900">
-                Document or Visual Asset <span className="text-red-500">*</span>
+              <label className="block text-xs font-mono font-semibold uppercase tracking-wider text-slate-300">
+                Document or Visual Asset <span className="text-rose-400">*</span>
               </label>
-              <div className="border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center hover:border-slate-400 transition bg-slate-50/50">
+              <div className="border-2 border-dashed border-slate-700 hover:border-teal-500/50 rounded-2xl p-8 text-center transition bg-[#080c14]/60">
                 <input
                   type="file"
                   id="file-upload"
@@ -293,22 +335,22 @@ export default function NewSubmissionPage() {
                   htmlFor="file-upload"
                   className="cursor-pointer flex flex-col items-center justify-center space-y-3"
                 >
-                  <div className="p-3 bg-white rounded-full shadow-sm border border-slate-200">
-                    <UploadCloud className="w-6 h-6 text-slate-600" />
+                  <div className="p-3 bg-[#141b2d] rounded-2xl border border-slate-700 shadow-sm text-teal-400">
+                    <UploadCloud className="w-6 h-6" />
                   </div>
                   {file ? (
                     <div>
-                      <p className="text-sm font-semibold text-slate-900">{file.name}</p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-sm font-semibold text-white">{file.name}</p>
+                      <p className="text-xs text-slate-400 mt-1 font-mono">
                         {(file.size / (1024 * 1024)).toFixed(2)} MB • Ready for Privacy Gate
                       </p>
                     </div>
                   ) : (
                     <div>
-                      <p className="text-sm font-medium text-slate-700">
-                        <span className="font-semibold text-slate-900 underline">Click to upload</span> or drag and drop
+                      <p className="text-sm font-medium text-slate-300">
+                        <span className="font-semibold text-teal-400 underline">Click to upload</span> or drag and drop
                       </p>
-                      <p className="text-xs text-slate-500 mt-1">
+                      <p className="text-xs text-slate-500 mt-1 font-mono">
                         Supported: DOCX, PDF, TXT, PNG, JPG (Binary signature verified)
                       </p>
                     </div>
@@ -320,19 +362,19 @@ export default function NewSubmissionPage() {
             /* Mode 2: Direct Text Area */
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-semibold text-slate-900">
-                  Marketing Copy / Draft Content <span className="text-red-500">*</span>
+                <label className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-300">
+                  Marketing Copy / Draft Content <span className="text-rose-400">*</span>
                 </label>
-                <span className="text-xs text-slate-500">
+                <span className="text-xs font-mono text-slate-400">
                   {textContent.length} characters • {textContent.split(/\s+/).filter(Boolean).length} words
                 </span>
               </div>
               <textarea
-                rows={8}
+                rows={7}
                 placeholder="Type or paste marketing claims, press release statements, or product descriptions here..."
                 value={textContent}
                 onChange={(e) => setTextContent(e.target.value)}
-                className="w-full p-4 text-sm font-mono border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 leading-relaxed"
+                className="w-full p-4 text-xs font-mono bg-[#080c14] text-slate-200 border border-slate-700 rounded-xl focus:outline-none focus:border-teal-500/60 leading-relaxed"
                 required={mode === "TEXT"}
               />
             </div>
@@ -340,15 +382,15 @@ export default function NewSubmissionPage() {
         </div>
 
         {/* Confidential Terms Protection Section */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div className="bg-[#0e1320] p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-base font-bold text-slate-900 flex items-center">
-                <Lock className="w-4 h-4 text-teal-600 mr-2" />
+              <h2 className="text-sm font-bold text-white flex items-center">
+                <Lock className="w-4 h-4 text-teal-400 mr-2" />
                 Confidential Project Terms Masking
               </h2>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Names added here will be dynamically masked into anonymous tokens (e.g. [CONFIDENTIAL_PROJECT_1]) before AI processing.
+              <p className="text-xs text-slate-400 mt-0.5">
+                Codewords entered here are dynamically tokenized before AI exposure to protect trade secrets.
               </p>
             </div>
           </div>
@@ -365,12 +407,12 @@ export default function NewSubmissionPage() {
                   handleAddTerm();
                 }
               }}
-              className="flex-1 px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900"
+              className="flex-1 px-3.5 py-2 text-xs bg-[#080c14] text-white border border-slate-700 rounded-xl focus:outline-none focus:border-teal-500/60"
             />
             <button
               type="button"
               onClick={handleAddTerm}
-              className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold rounded-lg transition flex items-center space-x-1"
+              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl transition flex items-center space-x-1"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Term</span>
@@ -381,16 +423,16 @@ export default function NewSubmissionPage() {
             {confidentialTerms.map((term, index) => (
               <span
                 key={term}
-                className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-teal-50 text-teal-900 border border-teal-200 space-x-1.5"
+                className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-mono bg-teal-500/10 text-teal-300 border border-teal-500/30 space-x-1.5"
               >
                 <span>{term}</span>
-                <span className="text-[10px] text-teal-600 font-mono">
+                <span className="text-[10px] text-teal-500">
                   → [CONFIDENTIAL_PROJECT_{index + 1}]
                 </span>
                 <button
                   type="button"
                   onClick={() => handleRemoveTerm(term)}
-                  className="text-teal-700 hover:text-teal-900 ml-1"
+                  className="text-teal-400 hover:text-white ml-1"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -400,14 +442,14 @@ export default function NewSubmissionPage() {
         </div>
 
         {/* Live Privacy Gate Scan Banner */}
-        <div className="bg-slate-900 text-white p-6 rounded-2xl shadow-lg space-y-4">
+        <div className="bg-[#0e1320] p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
           <div className="flex items-center justify-between border-b border-slate-800 pb-4">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-teal-950/80 rounded-lg border border-teal-500/30">
-                <ShieldCheck className="w-5 h-5 text-teal-400" />
+              <div className="p-2 bg-teal-500/10 rounded-xl border border-teal-500/30 text-teal-400">
+                <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm font-semibold tracking-wide">
+                <h3 className="text-sm font-bold text-white tracking-wide">
                   Privacy Gate Active (Deterministic Client-Edge Sanitizer)
                 </h3>
                 <p className="text-xs text-slate-400 mt-0.5">
@@ -415,23 +457,27 @@ export default function NewSubmissionPage() {
                 </p>
               </div>
             </div>
-            <span className="text-xs font-mono px-2.5 py-1 rounded bg-teal-900/60 text-teal-300 border border-teal-700/50">
+            <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-teal-500/20 text-teal-300 border border-teal-500/40">
               STATUS: READY
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
-            <div className="bg-slate-800/60 p-3 rounded-xl border border-slate-700/60">
-              <span className="text-slate-400">PII Redactions Detected:</span>
-              <p className="text-lg font-bold text-teal-300 mt-0.5">{previewSanitization.piiCount}</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+            <div className="bg-[#141b2d] p-3 rounded-xl border border-slate-800">
+              <span className="text-slate-400 font-mono text-[11px]">PII Redactions Detected:</span>
+              <p className="text-lg font-bold text-teal-300 font-mono mt-0.5">
+                {previewSanitization.piiCount}
+              </p>
             </div>
-            <div className="bg-slate-800/60 p-3 rounded-xl border border-slate-700/60">
-              <span className="text-slate-400">Project Terms Masked:</span>
-              <p className="text-lg font-bold text-amber-300 mt-0.5">{previewSanitization.termsCount}</p>
+            <div className="bg-[#141b2d] p-3 rounded-xl border border-slate-800">
+              <span className="text-slate-400 font-mono text-[11px]">Project Terms Masked:</span>
+              <p className="text-lg font-bold text-amber-300 font-mono mt-0.5">
+                {previewSanitization.termsCount}
+              </p>
             </div>
-            <div className="bg-slate-800/60 p-3 rounded-xl border border-slate-700/60 col-span-2 sm:col-span-1">
-              <span className="text-slate-400">External Model Exposure:</span>
-              <p className="text-xs font-semibold text-emerald-400 mt-1.5 flex items-center">
+            <div className="bg-[#141b2d] p-3 rounded-xl border border-slate-800 col-span-2 sm:col-span-1">
+              <span className="text-slate-400 font-mono text-[11px]">External Model Exposure:</span>
+              <p className="text-xs font-semibold text-emerald-400 mt-1 flex items-center font-mono">
                 <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Zero Raw PII Leaks
               </p>
             </div>
@@ -439,8 +485,10 @@ export default function NewSubmissionPage() {
 
           {previewSanitization.text && (
             <div className="space-y-1.5 pt-2">
-              <span className="text-xs text-slate-400 font-medium">Sanitized Preview (Delivered to AI):</span>
-              <div className="bg-slate-950 p-3 rounded-xl text-xs font-mono text-slate-300 border border-slate-800 max-h-28 overflow-y-auto leading-relaxed">
+              <span className="text-xs text-slate-400 font-mono">
+                Sanitized Preview (Delivered to AI):
+              </span>
+              <div className="bg-[#080c14] p-3.5 rounded-xl text-xs font-mono text-slate-300 border border-slate-800 max-h-28 overflow-y-auto leading-relaxed whitespace-pre-wrap">
                 {previewSanitization.text}
               </div>
             </div>
@@ -448,17 +496,17 @@ export default function NewSubmissionPage() {
         </div>
 
         {/* Submit Button */}
-        <div className="flex items-center justify-end space-x-4">
+        <div className="flex items-center justify-end space-x-3 pt-2">
           <Link
             href="/audits"
-            className="px-5 py-2.5 text-sm font-medium text-slate-700 hover:text-slate-900 transition"
+            className="px-5 py-2.5 text-xs font-semibold text-slate-400 hover:text-white transition"
           >
             Cancel
           </Link>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-semibold hover:bg-slate-800 transition shadow-md disabled:opacity-50 flex items-center space-x-2"
+            className="px-6 py-2.5 bg-teal-500 hover:bg-teal-400 text-slate-950 rounded-xl text-xs font-bold transition shadow-[0_0_20px_rgba(20,184,166,0.3)] disabled:opacity-50 flex items-center space-x-2"
           >
             <span>{isSubmitting ? "Processing Gate..." : "Submit for Verification"}</span>
             <ArrowRight className="w-4 h-4" />

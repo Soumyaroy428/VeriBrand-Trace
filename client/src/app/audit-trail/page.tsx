@@ -24,7 +24,6 @@ import {
   ChevronDown,
   X,
 } from "lucide-react";
-import Navbar from "@/components/Navbar";
 import { useAuth } from "@/context/AuthContext";
 
 interface AuditEventItem {
@@ -326,10 +325,7 @@ export default function AuditTrailPage() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col font-sans selection:bg-teal-500 selection:text-white">
-      <Navbar />
-
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Header Breadcrumbs */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-800 pb-6">
           <div className="space-y-1">
@@ -712,7 +708,6 @@ export default function AuditTrailPage() {
             </div>
           </div>
         )}
-      </main>
     </div>
   );
 }

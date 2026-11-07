@@ -16,7 +16,6 @@ import {
   RefreshCw,
   Search,
 } from "lucide-react";
-import Navbar from "@/components/Navbar";
 import { useAuth } from "@/context/AuthContext";
 
 interface ReviewQueueItem {
@@ -186,22 +185,19 @@ export default function ReviewQueuePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-      <Navbar />
-
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <div className="flex items-center space-x-2 text-sm text-slate-500 font-medium">
-              <Link href="/" className="hover:text-slate-800">Home</Link>
+            <div className="flex items-center space-x-2 text-sm text-slate-400 font-medium">
+              <Link href="/" className="hover:text-slate-200">Home</Link>
               <span>/</span>
-              <span className="text-slate-900 font-semibold">Reviewer Queue</span>
+              <span className="text-white font-semibold">Reviewer Queue</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight mt-1">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1">
               Reviewer Governance Queue
             </h1>
-            <p className="text-sm text-slate-600 mt-1 max-w-2xl">
+            <p className="text-sm text-slate-400 mt-1 max-w-2xl">
               Inspect pending brand submissions, review explainable diffs, decide on creator exception requests, and execute official sign-off with cryptographic compliance certificates.
             </p>
           </div>
@@ -209,9 +205,9 @@ export default function ReviewQueuePage() {
           <div className="flex items-center space-x-3">
             <button
               onClick={fetchQueue}
-              className="inline-flex items-center px-3.5 py-2 border border-slate-300 shadow-sm text-sm font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 transition"
+              className="inline-flex items-center px-3.5 py-2 border border-slate-700 shadow-sm text-sm font-medium rounded-lg text-slate-300 bg-white hover:bg-[#080c14] transition"
             >
-              <RefreshCw className={`w-4 h-4 mr-2 text-slate-500 ${loading ? "animate-spin" : ""}`} />
+              <RefreshCw className={`w-4 h-4 mr-2 text-slate-400 ${loading ? "animate-spin" : ""}`} />
               Refresh Queue
             </button>
             <Link
@@ -225,7 +221,7 @@ export default function ReviewQueuePage() {
         </div>
 
         {/* Filter & Search Bar */}
-        <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="bg-[#0e1320] rounded-2xl border border-slate-800 p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
             <span className="text-xs font-semibold uppercase text-slate-400 tracking-wider flex items-center mr-1">
               <Filter className="w-3.5 h-3.5 mr-1" /> Filter:
@@ -234,8 +230,8 @@ export default function ReviewQueuePage() {
               onClick={() => setFilterStatus("ALL")}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
                 filterStatus === "ALL"
-                  ? "bg-slate-900 text-white shadow-sm"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  ? "bg-teal-500 text-slate-950 font-bold shadow-sm"
+                  : "bg-slate-100 text-slate-400 hover:bg-slate-700"
               }`}
             >
               All Items
@@ -245,7 +241,7 @@ export default function ReviewQueuePage() {
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
                 filterStatus === "PENDING_REVIEW"
                   ? "bg-sky-600 text-white shadow-sm"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  : "bg-slate-100 text-slate-400 hover:bg-slate-700"
               }`}
             >
               Pending Review
@@ -255,7 +251,7 @@ export default function ReviewQueuePage() {
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
                 filterStatus === "NEEDS_CHANGES"
                   ? "bg-amber-600 text-white shadow-sm"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  : "bg-slate-100 text-slate-400 hover:bg-slate-700"
               }`}
             >
               Needs Changes
@@ -269,41 +265,41 @@ export default function ReviewQueuePage() {
               placeholder="Search submissions or creators..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white"
+              className="w-full pl-9 pr-3 py-1.5 bg-[#080c14] border border-slate-800 rounded-lg text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white"
             />
           </div>
         </div>
 
         {/* Queue Table */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="bg-[#0e1320] rounded-2xl border border-slate-800 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-slate-200">
-              <thead className="bg-slate-50">
+            <table className="min-w-full divide-y divide-slate-800">
+              <thead className="bg-[#080c14]">
                 <tr>
-                  <th scope="col" className="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3.5 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Submission
                   </th>
-                  <th scope="col" className="px-4 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th scope="col" className="px-4 py-3.5 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Status
                   </th>
-                  <th scope="col" className="px-4 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th scope="col" className="px-4 py-3.5 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Readiness Score
                   </th>
-                  <th scope="col" className="px-4 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th scope="col" className="px-4 py-3.5 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Traceable Violations
                   </th>
-                  <th scope="col" className="px-4 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th scope="col" className="px-4 py-3.5 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Exceptions & Comments
                   </th>
-                  <th scope="col" className="px-6 py-3.5 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-3.5 text-right text-xs font-semibold text-slate-400 uppercase tracking-wider">
                     Action
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 bg-white">
+              <tbody className="divide-y divide-slate-800 bg-white">
                 {loading && items.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-12 text-center text-slate-500 text-sm">
+                    <td colSpan={6} className="px-6 py-12 text-center text-slate-400 text-sm">
                       <div className="flex flex-col items-center justify-center space-y-2">
                         <RefreshCw className="w-6 h-6 animate-spin text-slate-400" />
                         <span>Loading reviewer queue...</span>
@@ -312,32 +308,32 @@ export default function ReviewQueuePage() {
                   </tr>
                 ) : filteredItems.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-12 text-center text-slate-500 text-sm">
+                    <td colSpan={6} className="px-6 py-12 text-center text-slate-400 text-sm">
                       <div className="flex flex-col items-center justify-center space-y-2">
                         <CheckCircle2 className="w-8 h-8 text-emerald-500" />
-                        <span className="font-semibold text-slate-800">Queue is Clear</span>
-                        <span className="text-xs text-slate-500">No submissions currently match the active filter.</span>
+                        <span className="font-semibold text-slate-200">Queue is Clear</span>
+                        <span className="text-xs text-slate-400">No submissions currently match the active filter.</span>
                       </div>
                     </td>
                   </tr>
                 ) : (
                   filteredItems.map((item) => (
-                    <tr key={item.submission_id} className="hover:bg-slate-50/80 transition group">
+                    <tr key={item.submission_id} className="hover:bg-[#080c14]/80 transition group">
                       <td className="px-6 py-4">
                         <div className="space-y-1">
                           <div className="flex items-center space-x-2">
-                            <span className="font-semibold text-sm text-slate-900 group-hover:text-teal-600 transition">
+                            <span className="font-semibold text-sm text-white group-hover:text-teal-400 transition">
                               {item.title}
                             </span>
-                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-slate-100 text-slate-400 border border-slate-800">
                               v{item.revision_count}
                             </span>
-                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-slate-100 text-slate-700">
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-slate-100 text-slate-300">
                               {item.format}
                             </span>
                           </div>
-                          <div className="text-xs text-slate-500">
-                            Submitted by <span className="font-medium text-slate-700">{item.creator_email || item.creator_id}</span>
+                          <div className="text-xs text-slate-400">
+                            Submitted by <span className="font-medium text-slate-300">{item.creator_email || item.creator_id}</span>
                           </div>
                         </div>
                       </td>
@@ -393,7 +389,7 @@ export default function ReviewQueuePage() {
                           )}
 
                           {item.comments_count > 0 && (
-                            <span className="inline-flex items-center text-xs text-slate-500">
+                            <span className="inline-flex items-center text-xs text-slate-400">
                               <MessageSquare className="w-3.5 h-3.5 mr-1 text-slate-400" />
                               {item.comments_count}
                             </span>
@@ -404,10 +400,10 @@ export default function ReviewQueuePage() {
                       <td className="px-6 py-4 whitespace-nowrap text-right">
                         <Link
                           href={`/audits/${item.submission_id}`}
-                          className="inline-flex items-center px-3 py-1.5 border border-slate-200 text-xs font-semibold rounded-lg text-slate-800 bg-white hover:bg-slate-100 hover:border-slate-300 shadow-sm transition"
+                          className="inline-flex items-center px-3 py-1.5 border border-slate-800 text-xs font-semibold rounded-lg text-slate-200 bg-white hover:bg-slate-100 hover:border-slate-700 shadow-sm transition"
                         >
                           Review & Decide
-                          <ArrowRight className="w-3.5 h-3.5 ml-1 text-slate-500" />
+                          <ArrowRight className="w-3.5 h-3.5 ml-1 text-slate-400" />
                         </Link>
                       </td>
                     </tr>
@@ -419,24 +415,23 @@ export default function ReviewQueuePage() {
         </div>
 
         {/* Governance Guidelines Box */}
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="rounded-xl border border-slate-800 bg-[#0e1320] p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <h4 className="text-sm font-bold text-slate-900 flex items-center">
-              <ShieldAlert className="w-4 h-4 mr-1.5 text-teal-600" />
+            <h4 className="text-sm font-bold text-white flex items-center">
+              <ShieldAlert className="w-4 h-4 mr-1.5 text-teal-400" />
               VeriBrand Trace Governance Sign-off Rules
             </h4>
-            <p className="text-xs text-slate-500 max-w-3xl">
+            <p className="text-xs text-slate-400 max-w-3xl">
               Formal approval requires a minimum Brand Readiness Score of <strong>85%</strong> or approved exceptions for all open critical/high findings. Creators cannot approve their own submissions. All approvals issue a mathematically verifiable compliance certificate with tamper-evident SHA-256 hash chaining.
             </p>
           </div>
           <Link
             href="/governance"
-            className="text-xs font-semibold text-teal-700 hover:text-teal-800 whitespace-nowrap flex items-center"
+            className="text-xs font-semibold text-teal-400 hover:text-teal-800 whitespace-nowrap flex items-center"
           >
             View Governance Analytics &rarr;
           </Link>
         </div>
-      </main>
     </div>
   );
 }

@@ -284,19 +284,19 @@ export default function BrandVaultPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-800 pb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <div className="w-7 h-7 rounded-md bg-teal-600/10 border border-teal-600/20 flex items-center justify-center text-teal-700">
+            <div className="w-7 h-7 rounded-md bg-teal-600/10 border border-teal-600/20 flex items-center justify-center text-teal-400">
               <Layers className="w-4 h-4" />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Brand Vault</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-white">Brand Vault</h1>
           </div>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-slate-400">
             Immutable guideline registry, approved facts, terminology boundaries, and visual standards for{" "}
-            <strong className="text-slate-800">{activeWorkspace?.workspace_name || "Acme Global"}</strong>.
+            <strong className="text-slate-200">{activeWorkspace?.workspace_name || "Acme Global"}</strong>.
           </p>
         </div>
 
@@ -304,13 +304,13 @@ export default function BrandVaultPage() {
           {isAdmin ? (
             <button
               onClick={() => setIsModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-medium text-xs shadow-sm transition"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-teal-600 hover:bg-teal-500/150 text-white font-medium text-xs shadow-sm transition"
             >
               <Plus className="w-4 h-4" />
               <span>Add Approved Fact</span>
             </button>
           ) : (
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#141b2d] border border-slate-800 text-slate-300 text-xs font-medium">
               <Shield className="w-3.5 h-3.5 text-slate-400" />
               <span>Read-Only View ({activeWorkspace?.role || "CREATOR"})</span>
             </div>
@@ -320,9 +320,9 @@ export default function BrandVaultPage() {
 
       {/* Permissions Callout if not Admin */}
       {!isAdmin && (
-        <div className="p-3.5 rounded-lg bg-amber-50/70 border border-amber-200/80 text-amber-900 text-xs flex items-center justify-between">
+        <div className="p-3.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Info className="w-4 h-4 text-amber-600 shrink-0" />
+            <Info className="w-4 h-4 text-amber-400 shrink-0" />
             <span>
               You are currently signed in with <strong>{activeWorkspace?.role}</strong> permissions. Brand Vault modifications are restricted to <strong>Governance Admins</strong>. Switch persona in the navbar to test admin editing.
             </span>
@@ -331,14 +331,14 @@ export default function BrandVaultPage() {
       )}
 
       {/* Navigation Tabs */}
-      <div className="border-b border-slate-200">
+      <div className="border-b border-slate-800">
         <nav className="flex space-x-6">
           <button
             onClick={() => setActiveTab("guidelines")}
             className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition ${
               activeTab === "guidelines"
-                ? "border-teal-600 text-teal-700 font-semibold"
-                : "border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300"
+                ? "border-teal-600 text-teal-400 font-semibold"
+                : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
             }`}
           >
             <BookOpen className="w-4 h-4" />
@@ -349,8 +349,8 @@ export default function BrandVaultPage() {
             onClick={() => setActiveTab("facts")}
             className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition ${
               activeTab === "facts"
-                ? "border-teal-600 text-teal-700 font-semibold"
-                : "border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300"
+                ? "border-teal-600 text-teal-400 font-semibold"
+                : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
             }`}
           >
             <CheckCircle2 className="w-4 h-4" />
@@ -361,8 +361,8 @@ export default function BrandVaultPage() {
             onClick={() => setActiveTab("terminology")}
             className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition ${
               activeTab === "terminology"
-                ? "border-teal-600 text-teal-700 font-semibold"
-                : "border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300"
+                ? "border-teal-600 text-teal-400 font-semibold"
+                : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
             }`}
           >
             <AlertTriangle className="w-4 h-4" />
@@ -373,8 +373,8 @@ export default function BrandVaultPage() {
             onClick={() => setActiveTab("visual")}
             className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition ${
               activeTab === "visual"
-                ? "border-teal-600 text-teal-700 font-semibold"
-                : "border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300"
+                ? "border-teal-600 text-teal-400 font-semibold"
+                : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
             }`}
           >
             <Palette className="w-4 h-4" />
@@ -385,8 +385,8 @@ export default function BrandVaultPage() {
             onClick={() => setActiveTab("assets")}
             className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition ${
               activeTab === "assets"
-                ? "border-teal-600 text-teal-700 font-semibold"
-                : "border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300"
+                ? "border-teal-600 text-teal-400 font-semibold"
+                : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
             }`}
           >
             <FolderOpen className="w-4 h-4" />
@@ -398,7 +398,7 @@ export default function BrandVaultPage() {
       {/* Tab 1: Guidelines Registry */}
       {activeTab === "guidelines" && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
+          <div className="flex items-center justify-between text-xs text-slate-400 mb-2">
             <span>Official brand documentation ingested and indexed for vector RAG retrieval.</span>
             <span>Total chunks: {guidelines.reduce((acc, g) => acc + (g.chunk_count || 0), 0)}</span>
           </div>
@@ -407,19 +407,19 @@ export default function BrandVaultPage() {
             {guidelines.map((doc) => (
               <div
                 key={doc.id}
-                className="p-5 bg-white border border-slate-200 rounded-xl hover:border-slate-300 transition shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                className="p-5 bg-[#0e1320] border border-slate-800 rounded-xl hover:border-slate-700 transition shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4"
               >
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2.5">
-                    <span className="font-semibold text-slate-900 text-sm">{doc.title}</span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                    <span className="font-semibold text-white text-sm">{doc.title}</span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-[#141b2d] text-slate-300 border border-slate-800">
                       v{doc.version}
                     </span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
                       {doc.status}
                     </span>
                   </div>
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-400">
                     <span className="flex items-center gap-1 font-mono text-[11px]">
                       <FileText className="w-3.5 h-3.5 text-slate-400" />
                       {doc.file_name}
@@ -436,7 +436,7 @@ export default function BrandVaultPage() {
                 </div>
 
                 <div className="shrink-0 flex items-center gap-2">
-                  <button className="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-medium text-slate-700 transition flex items-center gap-1">
+                  <button className="px-3 py-1.5 rounded-lg border border-slate-800 hover:bg-[#141b2d] text-xs font-medium text-slate-300 transition flex items-center gap-1">
                     <span>Inspect Chunks</span>
                     <ExternalLink className="w-3 h-3 text-slate-400" />
                   </button>
@@ -451,7 +451,7 @@ export default function BrandVaultPage() {
       {activeTab === "facts" && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-500">
+            <span className="text-xs text-slate-400">
               Audited corporate statements used to verify quantitative and historical marketing claims.
             </span>
             <div className="relative w-64">
@@ -461,7 +461,7 @@ export default function BrandVaultPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search approved facts..."
-                className="w-full pl-8 pr-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="w-full pl-8 pr-3 py-1.5 bg-[#0e1320] border border-slate-800 rounded-lg text-xs placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-teal-500"
               />
             </div>
           </div>
@@ -477,17 +477,17 @@ export default function BrandVaultPage() {
               .map((fact) => (
                 <div
                   key={fact.id}
-                  className="p-5 bg-white border border-slate-200 rounded-xl hover:border-slate-300 transition shadow-sm space-y-2"
+                  className="p-5 bg-[#0e1320] border border-slate-800 rounded-xl hover:border-slate-700 transition shadow-sm space-y-2"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-teal-50 text-teal-800 border border-teal-200">
+                      <span className="px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-teal-500/15 text-teal-300 border border-teal-500/30">
                         {fact.fact_key}
                       </span>
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-mono text-slate-500 border border-slate-200">
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-mono text-slate-400 border border-slate-800">
                         v{fact.version}
                       </span>
-                      <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
                         {fact.status}
                       </span>
                     </div>
@@ -498,11 +498,11 @@ export default function BrandVaultPage() {
                     </span>
                   </div>
 
-                  <p className="text-sm font-medium text-slate-900 leading-relaxed">{fact.statement}</p>
+                  <p className="text-sm font-medium text-white leading-relaxed">{fact.statement}</p>
 
                   {fact.source_reference && (
-                    <div className="text-xs text-slate-500 flex items-center gap-1.5 pt-1 border-t border-slate-100">
-                      <span className="font-semibold text-slate-700">Source Evidence:</span>
+                    <div className="text-xs text-slate-400 flex items-center gap-1.5 pt-1 border-t border-slate-100">
+                      <span className="font-semibold text-slate-300">Source Evidence:</span>
                       <span className="italic">{fact.source_reference}</span>
                     </div>
                   )}
@@ -515,7 +515,7 @@ export default function BrandVaultPage() {
       {/* Tab 3: Terminology Rules */}
       {activeTab === "terminology" && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between text-xs text-slate-500">
+          <div className="flex items-center justify-between text-xs text-slate-400">
             <span>Deterministic dictionary enforcing banned claims, preferred jargon, and compliance replacements.</span>
           </div>
 
@@ -523,34 +523,34 @@ export default function BrandVaultPage() {
             {terminology.map((rule) => (
               <div
                 key={rule.id}
-                className="p-5 bg-white border border-slate-200 rounded-xl hover:border-slate-300 transition shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4"
+                className="p-5 bg-[#0e1320] border border-slate-800 rounded-xl hover:border-slate-700 transition shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4"
               >
                 <div className="space-y-2">
                   <div className="flex items-center gap-2.5">
                     <span
                       className={`px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase ${
                         rule.rule_type === "BANNED"
-                          ? "bg-rose-50 text-rose-700 border border-rose-200"
-                          : "bg-amber-50 text-amber-700 border border-amber-200"
+                          ? "bg-rose-500/15 text-rose-300 border border-rose-500/30"
+                          : "bg-amber-500/15 text-amber-300 border border-amber-500/30"
                       }`}
                     >
                       {rule.rule_type}
                     </span>
-                    <span className="font-semibold text-slate-900 text-sm font-mono">&ldquo;{rule.term}&rdquo;</span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200 uppercase">
+                    <span className="font-semibold text-white text-sm font-mono">&ldquo;{rule.term}&rdquo;</span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#141b2d] text-slate-300 border border-slate-800 uppercase">
                       {rule.severity}
                     </span>
                   </div>
 
                   {rule.replacement && (
-                    <div className="text-xs text-slate-700 flex items-center gap-2">
+                    <div className="text-xs text-slate-300 flex items-center gap-2">
                       <span className="text-slate-400 font-medium">Approved Replacement:</span>
-                      <strong className="text-teal-700">&ldquo;{rule.replacement}&rdquo;</strong>
+                      <strong className="text-teal-400">&ldquo;{rule.replacement}&rdquo;</strong>
                     </div>
                   )}
 
                   {rule.guideline_reference && (
-                    <div className="text-xs text-slate-500 italic">
+                    <div className="text-xs text-slate-400 italic">
                       Policy rationale: {rule.guideline_reference}
                     </div>
                   )}
@@ -570,7 +570,7 @@ export default function BrandVaultPage() {
       {/* Tab 4: Visual Standards */}
       {activeTab === "visual" && (
         <div className="space-y-4">
-          <div className="text-xs text-slate-500">
+          <div className="text-xs text-slate-400">
             Approved color palettes, CIEDE2000 Delta-E tolerances, and WCAG contrast ratio requirements.
           </div>
 
@@ -580,13 +580,13 @@ export default function BrandVaultPage() {
               return (
                 <div
                   key={rule.id}
-                  className="p-5 bg-white border border-slate-200 rounded-xl hover:border-slate-300 transition shadow-sm space-y-3"
+                  className="p-5 bg-[#0e1320] border border-slate-800 rounded-xl hover:border-slate-700 transition shadow-sm space-y-3"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-slate-800 uppercase tracking-wide">
+                    <span className="text-xs font-semibold text-slate-200 uppercase tracking-wide">
                       {rule.rule_type.replace("_", " ")}
                     </span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#141b2d] text-slate-300 border border-slate-800">
                       {rule.severity}
                     </span>
                   </div>
@@ -598,23 +598,23 @@ export default function BrandVaultPage() {
                         style={{ backgroundColor: cfg.color_hex }}
                       />
                       <div>
-                        <div className="font-semibold text-slate-900 text-sm">{cfg.name || "Brand Color"}</div>
-                        <div className="font-mono text-xs text-slate-500">{cfg.color_hex}</div>
+                        <div className="font-semibold text-white text-sm">{cfg.name || "Brand Color"}</div>
+                        <div className="font-mono text-xs text-slate-400">{cfg.color_hex}</div>
                       </div>
                     </div>
                   )}
 
                   <div className="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-100 font-mono">
                     {cfg.tolerance_delta_e !== undefined && (
-                      <div className="p-2 bg-slate-50 rounded-lg">
+                      <div className="p-2 bg-[#141b2d] rounded-lg">
                         <span className="text-[10px] text-slate-400 block uppercase">Max Delta-E</span>
-                        <strong className="text-slate-800 text-xs">&le; {cfg.tolerance_delta_e}</strong>
+                        <strong className="text-slate-200 text-xs">&le; {cfg.tolerance_delta_e}</strong>
                       </div>
                     )}
                     {cfg.min_contrast_ratio !== undefined && (
-                      <div className="p-2 bg-slate-50 rounded-lg">
+                      <div className="p-2 bg-[#141b2d] rounded-lg">
                         <span className="text-[10px] text-slate-400 block uppercase">Min Contrast</span>
-                        <strong className="text-slate-800 text-xs">&ge; {cfg.min_contrast_ratio}:1</strong>
+                        <strong className="text-slate-200 text-xs">&ge; {cfg.min_contrast_ratio}:1</strong>
                       </div>
                     )}
                   </div>
@@ -628,7 +628,7 @@ export default function BrandVaultPage() {
       {/* Tab 5: Brand Assets */}
       {activeTab === "assets" && (
         <div className="space-y-4">
-          <div className="text-xs text-slate-500">
+          <div className="text-xs text-slate-400">
             Registered digital brand assets, logos, and vector marks stored for reference validation.
           </div>
 
@@ -636,16 +636,16 @@ export default function BrandVaultPage() {
             {assets.map((asset) => (
               <div
                 key={asset.id}
-                className="p-5 bg-white border border-slate-200 rounded-xl hover:border-slate-300 transition shadow-sm space-y-2"
+                className="p-5 bg-[#0e1320] border border-slate-800 rounded-xl hover:border-slate-700 transition shadow-sm space-y-2"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-slate-900 text-sm">{asset.name}</span>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                  <span className="font-semibold text-white text-sm">{asset.name}</span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-[#141b2d] text-slate-300 border border-slate-800">
                     {asset.asset_type}
                   </span>
                 </div>
 
-                <div className="text-xs text-slate-500 font-mono truncate">{asset.storage_key}</div>
+                <div className="text-xs text-slate-400 font-mono truncate">{asset.storage_key}</div>
 
                 <div className="text-[11px] text-slate-400 font-mono pt-2 border-t border-slate-100 flex items-center justify-between">
                   <span>SHA-256: {asset.file_hash.slice(0, 16)}...</span>
@@ -660,12 +660,12 @@ export default function BrandVaultPage() {
       {/* Modal: Add Approved Fact (Admin only) */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <h3 className="font-bold text-slate-900 text-base">Add Approved Corporate Fact</h3>
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-800 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <h3 className="font-bold text-white text-base">Add Approved Corporate Fact</h3>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 text-lg leading-none"
+                className="text-slate-400 hover:text-slate-300 text-lg leading-none"
               >
                 &times;
               </button>
@@ -673,7 +673,7 @@ export default function BrandVaultPage() {
 
             <form onSubmit={handleCreateFact} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Fact Key (Unique Identifier)
                 </label>
                 <input
@@ -682,12 +682,12 @@ export default function BrandVaultPage() {
                   value={newFactKey}
                   onChange={(e) => setNewFactKey(e.target.value)}
                   placeholder="e.g. q4_net_retention"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Audited Fact Statement
                 </label>
                 <textarea
@@ -696,12 +696,12 @@ export default function BrandVaultPage() {
                   value={newFactStatement}
                   onChange={(e) => setNewFactStatement(e.target.value)}
                   placeholder="e.g. Acme achieved 118% Net Revenue Retention in FY2026."
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Source Reference / Filing Citation
                 </label>
                 <input
@@ -709,7 +709,7 @@ export default function BrandVaultPage() {
                   value={newFactSource}
                   onChange={(e) => setNewFactSource(e.target.value)}
                   placeholder="e.g. FY2026 Annual Shareholder Letter, Section 2"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
               </div>
 
@@ -717,13 +717,13 @@ export default function BrandVaultPage() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-lg border border-slate-200 text-slate-700 text-xs font-medium hover:bg-slate-50 transition"
+                  className="px-4 py-2 rounded-lg border border-slate-800 text-slate-300 text-xs font-medium hover:bg-[#141b2d] transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-teal-600 hover:bg-teal-500 text-white text-xs font-medium shadow-sm transition"
+                  className="px-4 py-2 rounded-lg bg-teal-600 hover:bg-teal-500/150 text-white text-xs font-medium shadow-sm transition"
                 >
                   Save Fact to Registry
                 </button>

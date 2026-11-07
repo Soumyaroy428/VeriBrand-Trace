@@ -41,7 +41,6 @@ import {
   Download,
   Printer,
 } from "lucide-react";
-import Navbar from "@/components/Navbar";
 import { useAuth } from "@/context/AuthContext";
 
 interface FindingEvidence {
@@ -774,10 +773,7 @@ export default function SubmissionAuditView() {
   const readinessScore = auditRun?.readiness_score ?? 100;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-      <Navbar />
-
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Toast Notification */}
         {toastMessage && (
           <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-3 rounded-xl shadow-xl flex items-center space-x-3 border border-slate-700 animate-in fade-in slide-in-from-bottom-2">
@@ -1799,7 +1795,6 @@ export default function SubmissionAuditView() {
             </div>
           </div>
         )}
-      </main>
     </div>
   );
 }

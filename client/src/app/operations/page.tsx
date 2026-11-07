@@ -19,7 +19,6 @@ import {
   Users,
   FileCheck,
 } from "lucide-react";
-import Navbar from "@/components/Navbar";
 import { useAuth } from "@/context/AuthContext";
 
 interface SystemTelemetry {
@@ -165,24 +164,21 @@ export default function OperationsTelemetryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
-      <Navbar />
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="px-2.5 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 uppercase tracking-wider">
                 Production Release Readiness
               </span>
-              <span className="text-xs text-slate-500 font-mono">Phase 8 Verified</span>
+              <span className="text-xs text-slate-400 font-mono">Phase 8 Verified</span>
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-950 flex items-center gap-2">
-              <Activity className="w-6 h-6 text-teal-600" />
+            <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+              <Activity className="w-6 h-6 text-teal-400" />
               System Operations & Telemetry
             </h1>
-            <p className="text-sm text-slate-600 mt-1">
+            <p className="text-sm text-slate-400 mt-1">
               Monitor real-time engine health, disaster recovery archives, and release certification signed by Last of Us team owners.
             </p>
           </div>
@@ -191,7 +187,7 @@ export default function OperationsTelemetryPage() {
             <button
               onClick={fetchTelemetry}
               disabled={loading}
-              className="p-2 text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition"
+              className="p-2 text-slate-400 hover:text-white bg-[#0e1320] border border-slate-800 rounded-lg hover:bg-[#141b2d] transition"
               title="Refresh Telemetry"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
@@ -199,7 +195,7 @@ export default function OperationsTelemetryPage() {
             <button
               onClick={handleCreateBackup}
               disabled={creatingBackup}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-medium hover:bg-slate-800 transition shadow-sm disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-teal-500/150 text-slate-950 font-bold hover:bg-teal-400 rounded-lg text-sm font-medium hover:bg-slate-800 transition shadow-sm disabled:opacity-50"
             >
               <Download className="w-4 h-4 text-teal-400" />
               {creatingBackup ? "Sealing Backup..." : "Create Workspace Backup"}
@@ -227,9 +223,9 @@ export default function OperationsTelemetryPage() {
 
         {/* Engine Health Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div className="p-5 bg-white border border-slate-200 rounded-xl shadow-sm space-y-3">
+          <div className="p-5 bg-[#0e1320] border border-slate-800 rounded-xl shadow-sm space-y-3">
             <div className="flex items-center justify-between">
-              <div className="w-9 h-9 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center font-bold">
+              <div className="w-9 h-9 rounded-lg bg-teal-500/15 text-teal-400 flex items-center justify-center font-bold">
                 <Cpu className="w-5 h-5" />
               </div>
               <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
@@ -237,18 +233,18 @@ export default function OperationsTelemetryPage() {
               </span>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-slate-900">Deterministic Engine</h3>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <h3 className="text-sm font-semibold text-white">Deterministic Engine</h3>
+              <p className="text-xs text-slate-400 mt-0.5">
                 Mathematical terminology scanners, number comparison, Delta-E colour extractors, and WCAG contrast check.
               </p>
             </div>
-            <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+            <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
               <span>Avg Scan:</span>
-              <span className="font-semibold text-slate-800">{telemetry?.performance_benchmarks.deterministic_scan_ms || 14.8} ms</span>
+              <span className="font-semibold text-slate-200">{telemetry?.performance_benchmarks.deterministic_scan_ms || 14.8} ms</span>
             </div>
           </div>
 
-          <div className="p-5 bg-white border border-slate-200 rounded-xl shadow-sm space-y-3">
+          <div className="p-5 bg-[#0e1320] border border-slate-800 rounded-xl shadow-sm space-y-3">
             <div className="flex items-center justify-between">
               <div className="w-9 h-9 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold">
                 <Sparkles className="w-5 h-5" />
@@ -258,18 +254,18 @@ export default function OperationsTelemetryPage() {
               </span>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-slate-900">Grounded RAG & AI Verification</h3>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <h3 className="text-sm font-semibold text-white">Grounded RAG & AI Verification</h3>
+              <p className="text-xs text-slate-400 mt-0.5">
                 Vector evidence retrieval with Gemini 2.5 Flash grounded claim citations and prompt-injection defense.
               </p>
             </div>
-            <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+            <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
               <span>RAG Retrieval:</span>
-              <span className="font-semibold text-slate-800">{telemetry?.performance_benchmarks.rag_evidence_retrieval_ms || 68.2} ms</span>
+              <span className="font-semibold text-slate-200">{telemetry?.performance_benchmarks.rag_evidence_retrieval_ms || 68.2} ms</span>
             </div>
           </div>
 
-          <div className="p-5 bg-white border border-slate-200 rounded-xl shadow-sm space-y-3">
+          <div className="p-5 bg-[#0e1320] border border-slate-800 rounded-xl shadow-sm space-y-3">
             <div className="flex items-center justify-between">
               <div className="w-9 h-9 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
                 <Lock className="w-5 h-5" />
@@ -279,27 +275,27 @@ export default function OperationsTelemetryPage() {
               </span>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-slate-900">Cryptographic Audit Ledger</h3>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <h3 className="text-sm font-semibold text-white">Cryptographic Audit Ledger</h3>
+              <p className="text-xs text-slate-400 mt-0.5">
                 Tamper-evident sequential SHA-256 hash chaining of all mutations, exceptions, and approval events.
               </p>
             </div>
-            <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+            <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
               <span>Chained Events:</span>
-              <span className="font-semibold text-slate-800">{telemetry?.governance_metrics.chained_audit_events || 84} Events</span>
+              <span className="font-semibold text-slate-200">{telemetry?.governance_metrics.chained_audit_events || 84} Events</span>
             </div>
           </div>
         </div>
 
         {/* Release Readiness Gates */}
-        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div className="bg-[#0e1320] border border-slate-800 rounded-xl p-6 shadow-sm space-y-5">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-4">
             <div>
-              <h2 className="text-base font-bold text-slate-950 flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-teal-600" />
+              <h2 className="text-base font-bold text-white flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-teal-400" />
                 Phase 8 — Release Verification Checklist
               </h2>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-slate-400 mt-0.5">
                 All production quality gates required by the VeriBrand Trace specification.
               </p>
             </div>
@@ -310,61 +306,61 @@ export default function OperationsTelemetryPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex items-start gap-3 p-3.5 rounded-lg border border-slate-100 bg-slate-50/50">
+            <div className="flex items-start gap-3 p-3.5 rounded-lg border border-slate-800 bg-[#141b2d]/60">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
               <div>
-                <div className="text-xs font-semibold text-slate-900">Sovereign Human Reviewer Authority</div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-xs font-semibold text-white">Sovereign Human Reviewer Authority</div>
+                <div className="text-[11px] text-slate-400">
                   Core philosophy enforced: AI suggestions and deterministic warnings are advisory. Only authorized human reviewers issue final sign-off.
                 </div>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-3.5 rounded-lg border border-slate-100 bg-slate-50/50">
+            <div className="flex items-start gap-3 p-3.5 rounded-lg border border-slate-800 bg-[#141b2d]/60">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
               <div>
-                <div className="text-xs font-semibold text-slate-900">Zero PII & Confidential Data Leakage</div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-xs font-semibold text-white">Zero PII & Confidential Data Leakage</div>
+                <div className="text-[11px] text-slate-400">
                   Pre-inference privacy gate redacts emails, phones, SSNs, credit cards, IP addresses, and masks brand codenames.
                 </div>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-3.5 rounded-lg border border-slate-100 bg-slate-50/50">
+            <div className="flex items-start gap-3 p-3.5 rounded-lg border border-slate-800 bg-[#141b2d]/60">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
               <div>
-                <div className="text-xs font-semibold text-slate-900">Multi-Tenant Data Isolation</div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-xs font-semibold text-white">Multi-Tenant Data Isolation</div>
+                <div className="text-[11px] text-slate-400">
                   Strict workspace-level scoping across all MongoDB collections and vector embeddings with complete RBAC hierarchy.
                 </div>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-3.5 rounded-lg border border-slate-100 bg-slate-50/50">
+            <div className="flex items-start gap-3 p-3.5 rounded-lg border border-slate-800 bg-[#141b2d]/60">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
               <div>
-                <div className="text-xs font-semibold text-slate-900">Tamper-Evident SHA-256 Ledger</div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-xs font-semibold text-white">Tamper-Evident SHA-256 Ledger</div>
+                <div className="text-[11px] text-slate-400">
                   Immutable cryptographic chain verifies previous hash linkages and recalculates event payloads on demand.
                 </div>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-3.5 rounded-lg border border-slate-100 bg-slate-50/50">
+            <div className="flex items-start gap-3 p-3.5 rounded-lg border border-slate-800 bg-[#141b2d]/60">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
               <div>
-                <div className="text-xs font-semibold text-slate-900">Printable Compliance Certificates</div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-xs font-semibold text-white">Printable Compliance Certificates</div>
+                <div className="text-[11px] text-slate-400">
                   Official Letter Landscape ReportLab PDF exports with embedded high-contrast QR codes and SHA-256 validation seals.
                 </div>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 p-3.5 rounded-lg border border-slate-100 bg-slate-50/50">
+            <div className="flex items-start gap-3 p-3.5 rounded-lg border border-slate-800 bg-[#141b2d]/60">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
               <div>
-                <div className="text-xs font-semibold text-slate-900">Automated Test Verification</div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-xs font-semibold text-white">Automated Test Verification</div>
+                <div className="text-[11px] text-slate-400">
                   100% pass rate across 91 backend automated tests, 14 compiled Next.js routes, and verified Render/Vercel pipelines.
                 </div>
               </div>
@@ -373,52 +369,51 @@ export default function OperationsTelemetryPage() {
         </div>
 
         {/* Team Ownership Sign-Off */}
-        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4">
-          <div className="border-b border-slate-100 pb-3">
-            <h2 className="text-base font-bold text-slate-950 flex items-center gap-2">
-              <Users className="w-5 h-5 text-teal-600" />
+        <div className="bg-[#0e1320] border border-slate-800 rounded-xl p-6 shadow-sm space-y-4">
+          <div className="border-b border-slate-800 pb-3">
+            <h2 className="text-base font-bold text-white flex items-center gap-2">
+              <Users className="w-5 h-5 text-teal-400" />
               Last of Us — Release Ownership Sign-Off
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-400 mt-0.5">
               Ownership mapping from the source development plan.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-4 rounded-lg bg-slate-50 border border-slate-200/60 space-y-1">
-              <div className="text-xs text-slate-500 font-medium">Backend Architecture & RBAC</div>
-              <div className="text-sm font-bold text-slate-900">Sayantan Dutta</div>
+            <div className="p-4 rounded-lg bg-[#141b2d] border border-slate-800/60 space-y-1">
+              <div className="text-xs text-slate-400 font-medium">Backend Architecture & RBAC</div>
+              <div className="text-sm font-bold text-white">Sayantan Dutta</div>
               <div className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1 pt-1">
                 <CheckCircle2 className="w-3 h-3" /> Signed & Verified
               </div>
             </div>
 
-            <div className="p-4 rounded-lg bg-slate-50 border border-slate-200/60 space-y-1">
-              <div className="text-xs text-slate-500 font-medium">AIML Lead & RAG Pipeline</div>
-              <div className="text-sm font-bold text-slate-900">Soumya Roy</div>
+            <div className="p-4 rounded-lg bg-[#141b2d] border border-slate-800/60 space-y-1">
+              <div className="text-xs text-slate-400 font-medium">AIML Lead & RAG Pipeline</div>
+              <div className="text-sm font-bold text-white">Soumya Roy</div>
               <div className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1 pt-1">
                 <CheckCircle2 className="w-3 h-3" /> Signed & Verified
               </div>
             </div>
 
-            <div className="p-4 rounded-lg bg-slate-50 border border-slate-200/60 space-y-1">
-              <div className="text-xs text-slate-500 font-medium">Deterministic Engine & CV</div>
-              <div className="text-sm font-bold text-slate-900">Debarun Banerjee</div>
+            <div className="p-4 rounded-lg bg-[#141b2d] border border-slate-800/60 space-y-1">
+              <div className="text-xs text-slate-400 font-medium">Deterministic Engine & CV</div>
+              <div className="text-sm font-bold text-white">Debarun Banerjee</div>
               <div className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1 pt-1">
                 <CheckCircle2 className="w-3 h-3" /> Signed & Verified
               </div>
             </div>
 
-            <div className="p-4 rounded-lg bg-slate-50 border border-slate-200/60 space-y-1">
-              <div className="text-xs text-slate-500 font-medium">Frontend Workspace & Diff UX</div>
-              <div className="text-sm font-bold text-slate-900">Risijit Dhar</div>
+            <div className="p-4 rounded-lg bg-[#141b2d] border border-slate-800/60 space-y-1">
+              <div className="text-xs text-slate-400 font-medium">Frontend Workspace & Diff UX</div>
+              <div className="text-sm font-bold text-white">Risijit Dhar</div>
               <div className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1 pt-1">
                 <CheckCircle2 className="w-3 h-3" /> Signed & Verified
               </div>
             </div>
           </div>
         </div>
-      </main>
     </div>
   );
 }

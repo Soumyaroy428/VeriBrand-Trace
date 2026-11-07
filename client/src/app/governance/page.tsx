@@ -21,7 +21,6 @@ import {
   X,
   ExternalLink,
 } from "lucide-react";
-import Navbar from "@/components/Navbar";
 import { useAuth } from "@/context/AuthContext";
 
 /**
@@ -236,10 +235,7 @@ export default function AnalyticsOverviewDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0f17] text-[#e2e8f0] flex flex-col font-sans selection:bg-teal-500 selection:text-black">
-      <Navbar />
-
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Editorial Eyebrow & Asymmetric Header */}
         <div className="border-b border-slate-800/80 pb-6">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
@@ -655,7 +651,6 @@ export default function AnalyticsOverviewDashboard() {
             </Link>
           </div>
         </div>
-      </main>
 
       {/* Modern Platform Standards: Native HTML5 <dialog> for Rule Inspection */}
       <dialog
