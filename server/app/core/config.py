@@ -1,6 +1,7 @@
 """Application configuration and environment settings via Pydantic Settings."""
 
-from typing import List
+import json
+from typing import List, Union, Any
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -15,7 +16,7 @@ class Settings(BaseSettings):
     API_PORT: int = 8000
     API_V1_PREFIX: str = "/api/v1"
     
-    CORS_ORIGINS: List[str] = [
+    CORS_ORIGINS: Union[List[str], str] = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
     ]
@@ -44,11 +45,19 @@ class Settings(BaseSettings):
 
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
-    def assemble_cors_origins(cls, v: any) -> List[str]:
+    def assemble_cors_origins(cls, v: Any) -> List[str]:
         if isinstance(v, str):
+            v_stripped = v.strip()
+            if v_stripped.startswith("[") and v_stripped.endswith("]"):
+                try:
+                    parsed = json.loads(v_stripped)
+                    if isinstance(parsed, list):
+                        return [str(item).strip() for item in parsed if str(item).strip()]
+                except Exception:
+                    pass
             return [i.strip() for i in v.split(",") if i.strip()]
         elif isinstance(v, list):
-            return v
+            return [str(i).strip() for i in v if str(i).strip()]
         return ["http://localhost:3000", "http://127.0.0.1:3000"]
 
     model_config = SettingsConfigDict(
