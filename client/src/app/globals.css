@@ -3,6 +3,37 @@
 @tailwind utilities;
 
 :root {
+  /* OKLCH Semantic Tokens from root DESIGN.md */
+  --bg-canvas: oklch(0.14 0.008 250);
+  --bg-surface: oklch(0.18 0.010 250);
+  --bg-surface-elevated: oklch(0.22 0.012 250);
+  --bg-surface-subtle: oklch(0.16 0.009 250);
+
+  --border-subtle: oklch(0.24 0.010 250);
+  --border-muted: oklch(0.30 0.012 250);
+  --border-active: oklch(0.48 0.020 250);
+
+  --text-title: oklch(0.98 0.005 250);
+  --text-body: oklch(0.85 0.010 250);
+  --text-muted: oklch(0.62 0.012 250);
+  --text-inverse: oklch(0.12 0.008 250);
+
+  --brand-primary: oklch(0.72 0.14 175);
+  --brand-primary-hover: oklch(0.78 0.16 175);
+  --brand-primary-subtle: oklch(0.24 0.04 175);
+
+  --severity-critical: oklch(0.62 0.22 25);
+  --severity-critical-subtle: oklch(0.22 0.06 25);
+  --severity-high: oklch(0.72 0.18 55);
+  --severity-high-subtle: oklch(0.24 0.05 55);
+  --severity-medium: oklch(0.78 0.16 85);
+  --severity-medium-subtle: oklch(0.25 0.05 85);
+  --severity-low: oklch(0.72 0.14 240);
+  --severity-low-subtle: oklch(0.22 0.04 240);
+  --severity-pass: oklch(0.76 0.16 150);
+  --severity-pass-subtle: oklch(0.22 0.05 150);
+
+  /* Legacy fallback compatibility */
   --foreground-rgb: 15, 23, 42;
   --background-rgb: 248, 250, 252;
 }
@@ -10,26 +41,31 @@
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
   min-height: 100vh;
 }
 
-/* Custom scrollbars for side-by-side diff panes */
+/* Precision Tabular Numbers */
+.font-tabular {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom crisp scrollbars for side-by-side diff panes & tables */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: rgba(148, 163, 184, 0.3);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: rgba(148, 163, 184, 0.5);
 }
-
