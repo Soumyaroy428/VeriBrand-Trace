@@ -2,7 +2,8 @@
 ## VeriBrand Trace
 
 ## 1. Status and scope
-MCP is not mentioned in the Round 1 PDF. This document proposes an optional MCP integration layer for controlled access to VeriBrand Trace capabilities. MCP is not required for the core web application and should be deferred unless a clear product use case exists.
+**Status:** IMPLEMENTED (Checkpoint 14).
+Provides an authenticated, workspace-isolated Model Context Protocol (MCP) gateway (`/api/v1/mcp/tools/list` and `/api/v1/workspaces/{workspace_id}/mcp/tools/call`) allowing external LLMs, AI agents, and IDE tools (Cursor, Claude Desktop, Antigravity, VS Code) to query brand standards and execute compliance audits programmatically.
 
 ## 2. Design objective
 Allow an authorised MCP client to invoke narrowly scoped brand-governance tools without bypassing the platform's authentication, workspace isolation, approval workflow or privacy gate.
