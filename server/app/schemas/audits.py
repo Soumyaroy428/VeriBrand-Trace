@@ -56,3 +56,48 @@ class AuditRunResponse(BaseModel):
 class AuditRunWithFindingsResponse(BaseModel):
     audit_run: AuditRunResponse
     findings: List[FindingResponse]
+
+
+# --- Checkpoint 8: Diff & Exception Schemas ---
+
+class ExceptionCreateRequest(BaseModel):
+    reason: str
+
+
+class ExceptionResponse(BaseModel):
+    id: str
+    finding_id: str
+    submission_id: str
+    requested_by: str
+    reason: str
+    status: str
+    created_at: datetime
+
+
+class ApplySuggestionRequest(BaseModel):
+    finding_id: str
+
+
+class DiffChunk(BaseModel):
+    type: str  # "equal", "delete", "insert"
+    text: str
+
+
+class DiffLine(BaseModel):
+    line_number_orig: Optional[int] = None
+    line_number_rev: Optional[int] = None
+    type: str  # "equal", "modified", "delete", "insert"
+    original_text: Optional[str] = None
+    revised_text: Optional[str] = None
+
+
+class DiffResponse(BaseModel):
+    submission_id: str
+    from_revision_number: int
+    to_revision_number: int
+    original_text: str
+    revised_text: str
+    chunks: List[DiffChunk]
+    lines: List[DiffLine]
+    stats: Dict[str, int]
+

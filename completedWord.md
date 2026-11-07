@@ -238,10 +238,38 @@
 
 ---
 
-### 9. Cloud Deployment & Hosting Status
+### 9. Checkpoint 8: Explainable Diff Workspace (COMPLETED, COMMITTED & DEPLOYED)
+- **Granular Token & Line Diff Engine (`server/app/services/diff_engine.py`):**
+  - Word-level tokenized diffs (`DiffChunk`) categorizing inline additions (`insert`), deletions (`delete`), and unchanged words with exact start and end offsets.
+  - Synchronized side-by-side line comparison (`DiffLine`) using `difflib.SequenceMatcher` aligning left (original) and right (suggested/modified) line pairs.
+  - Computes exact change statistics: additions count, deletions count, modifications count, and unchanged lines.
+- **Explainable Diff REST Endpoints (`server/app/api/v1/audits.py`):**
+  - `GET /api/v1/submissions/{id}/diff?from_rev=1&to_rev=2`: Side-by-side revision comparison endpoint.
+  - `POST /api/v1/submissions/{id}/apply-suggestion`: Intent-preserving suggestion application that creates an incremental revision (`v2`, `v3`), updates the Brand Readiness Score, marks the finding as `RESOLVED`, and logs a SHA-256 chained `SUGGESTION_APPLIED` audit event.
+  - `POST /api/v1/findings/{id}/exceptions`: Human-in-the-loop exception request with mandatory business justification, transitioning finding to `EXCEPTION_REQUESTED` and recording an `EXCEPTION_REQUESTED` audit event.
+  - `GET /api/v1/submissions/{id}/exceptions`: Lists all pending and decided exceptions for a submission.
+- **Frontend Explainable Diff Workspace (`client/src/app/audits/[id]/page.tsx`):**
+  - Synchronized dual-pane layout: original submission vs suggested revision with synchronized scrolling.
+  - Word-level inline strike-throughs (red-tinted) and highlight additions (emerald-tinted).
+  - Bidirectional click-to-focus linkage between traceable violation cards and highlighted diff segments.
+  - Interactive "Accept Suggestion" action triggering automatic re-audit and dynamic score recalculation.
+  - Human-in-the-loop "Request Exception" modal requiring business justification without silencing audit logs.
+  - Direct Manual Edit Drawer allowing creators to edit text and create a fresh revision.
+- **Automated Test Suite & Verification (`server/tests/test_diff_workspace.py`):**
+  - 5 automated tests: word chunk extraction, line matching, diff API endpoint, suggestion application with revision incrementing, and exception request creation.
+  - Unified backend test suite: **64/64 tests passing (100% pass rate)**.
+- **Vercel Production Deployment:**
+  - Deployed to dedicated project: `https://veribrand-trace.vercel.app` (Verified HTTP 200 OK).
+
+---
+
+### 10. Cloud Deployment & Hosting Status
 - **Frontend (Vercel):**
   - Production URL: `https://veribrand-trace.vercel.app`
   - Vercel Project / Scope: `soumyaroy428s-projects/veribrand-trace`
   - Status: **Ready & Live** (All 10 Next.js routes active, including `/brand-vault`, `/audits`, `/audits/new`, `/audits/[id]`)
 - **Backend (Render):**
+  - Production URL: `https://veribrand-trace-api.onrender.com`
+  - Service ID: `srv-dbnbmh15efls73asra30` (Owner: `tea-dacrd7jl550s7380ko4g`)
   - Blueprint: Configured root `render.yaml` with Python 3 web service specification, automated dependencies installation, Uvicorn ASGI server, health check route (`/api/v1/health`), and environment variable definitions.
+  - Status: **Operational & Healthy** (Verified HTTP 200 on `/` and `/api/v1/health`).
