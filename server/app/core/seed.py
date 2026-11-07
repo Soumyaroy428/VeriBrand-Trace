@@ -8,6 +8,7 @@ and tamper-evident initial audit event.
 from typing import Optional
 from datetime import datetime, timezone
 import hashlib
+from app.core.security import get_password_hash
 from app.models.documents import (
     User,
     Workspace,
@@ -20,8 +21,8 @@ from app.models.documents import (
 
 
 def mock_hash_password(password: str) -> str:
-    """Generate SHA-256 hash for seed development passwords."""
-    return hashlib.sha256(password.encode("utf-8")).hexdigest()
+    """Generate bcrypt hash for seed development passwords."""
+    return get_password_hash(password)
 
 
 async def seed_database() -> dict:

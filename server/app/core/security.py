@@ -14,14 +14,17 @@ def get_password_hash(password: str) -> str:
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify a plaintext password against its bcrypt hash."""
+    """Verify a plaintext password against its bcrypt hash or sha256 fallback."""
     try:
-        return bcrypt.checkpw(
+        if bcrypt.checkpw(
             plain_password.encode("utf-8"),
             hashed_password.encode("utf-8")
-        )
+        ):
+            return True
     except Exception:
-        return False
+        pass
+    import hashlib
+    return hashlib.sha256(plain_password.encode("utf-8")).hexdigest() == hashed_password
 
 
 def create_access_token(
