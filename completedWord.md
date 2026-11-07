@@ -214,3 +214,34 @@
 
 
 
+
+---
+
+### 8. Checkpoint 7: RAG & AI Claim Verification (COMPLETED, COMMITTED & DEPLOYED)
+- **Document Chunking & Vector Embeddings (`server/app/services/rag_engine.py`):**
+  - Semantic markdown document chunking with header path preservation and token window calculation.
+  - Generates normalized dense embeddings using Gemini `text-embedding-004` API with deterministic n-gram vector fallback.
+  - Multi-tenant workspace-isolated evidence retrieval using cosine similarity search across `GuidelineChunk` and `ApprovedFact` records.
+- **Grounded AI Claim & Tone Verification (`server/app/services/ai_claim_verifier.py`):**
+  - Grounded claim verification powered by Google Gemini 2.5 Flash API via official `google-genai` SDK.
+  - Adversarial prompt injection defense: isolates user copy as untrusted passive data, detects jailbreak attempts, and flags malicious instructions as `CRITICAL` findings.
+  - Unsupported superlative & tone detector: identifies ungrounded marketing claims ("unmatched", "world's best", "100% infallible") and produces intent-preserving revisions.
+  - Resilient circuit breaker: gracefully falls back to deterministic verification if Gemini API key is missing or external provider times out.
+  - Output validation: strictly enforces typed Pydantic models (`AiVerificationFinding`).
+- **Unified Audit Endpoint Integration (`server/app/api/v1/audits.py`):**
+  - `POST /api/v1/submissions/{id}/audits`: Integrates Deterministic Engine, RAG evidence retrieval, and Gemini 2.5 Flash claim verification in a single atomic audit workflow.
+  - Attaches `FindingEvidence` citations and records SHA-256 chained `FULL_AUDIT_COMPLETED` audit event.
+- **Automated Test Suite & Verification (`server/tests/test_rag_ai_verification.py`):**
+  - 7 automated tests: semantic chunking, cosine similarity, tenant isolation, unsupported superlatives, contradicted claim verification, prompt injection defense, and full end-to-end API audit execution.
+- **Vercel Production Deployment:**
+  - Deployed to dedicated project: `https://veribrand-trace.vercel.app` (Verified HTTP 200 OK across all routes).
+
+---
+
+### 9. Cloud Deployment & Hosting Status
+- **Frontend (Vercel):**
+  - Production URL: `https://veribrand-trace.vercel.app`
+  - Vercel Project / Scope: `soumyaroy428s-projects/veribrand-trace`
+  - Status: **Ready & Live** (All 10 Next.js routes active, including `/brand-vault`, `/audits`, `/audits/new`, `/audits/[id]`)
+- **Backend (Render):**
+  - Blueprint: Configured root `render.yaml` with Python 3 web service specification, automated dependencies installation, Uvicorn ASGI server, health check route (`/api/v1/health`), and environment variable definitions.

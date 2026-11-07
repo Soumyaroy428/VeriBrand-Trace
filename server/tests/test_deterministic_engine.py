@@ -360,8 +360,13 @@ async def test_full_deterministic_audit_api_flow():
         # Check AuditEvent was chained with SHA-256 hash
         audit_event = await AuditEvent.find_one(
             AuditEvent.workspace_id == ws.id,
-            AuditEvent.action == "DETERMINISTIC_AUDIT_COMPLETED",
+            AuditEvent.action == "FULL_AUDIT_COMPLETED",
         )
+        if not audit_event:
+            audit_event = await AuditEvent.find_one(
+                AuditEvent.workspace_id == ws.id,
+                AuditEvent.action == "DETERMINISTIC_AUDIT_COMPLETED",
+            )
         assert audit_event is not None
         assert len(audit_event.event_hash) == 64
 

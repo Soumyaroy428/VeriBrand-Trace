@@ -28,7 +28,9 @@ from app.schemas.audits import (
     FindingEvidenceResponse,
     AuditRunWithFindingsResponse,
 )
-from app.services.deterministic_engine import deterministic_engine
+from app.services.deterministic_engine import deterministic_engine, compute_readiness_score
+from app.services.rag_engine import rag_engine
+from app.services.ai_claim_verifier import ai_claim_verifier
 
 router = APIRouter()
 
@@ -182,24 +184,97 @@ async def start_submission_audit(
             detail="Submission has no revisions to audit",
         )
 
-    # Execute Deterministic Engine
+    # 1. Execute Deterministic Engine
     audit_run, findings = await deterministic_engine.run_audit(
         submission=submission,
         revision=latest_rev,
     )
 
-    # Record SHA-256 Audit Event
+    # 2. Workspace-Scoped Evidence Retrieval (RAG)
+    text_to_audit = latest_rev.sanitized_text or latest_rev.extracted_text or latest_rev.raw_content or ""
+    evidence_passages = await rag_engine.retrieve_evidence(
+        workspace_id=submission.workspace_id,
+        query=text_to_audit,
+        top_k=5,
+    )
+
+    # 3. Grounded AI Claim & Tone Verification (Gemini 2.5 Flash)
+    ai_findings_raw, ai_status, ai_err = await ai_claim_verifier.verify_claims(
+        sanitized_text=text_to_audit,
+        retrieved_evidence=evidence_passages,
+        workspace_id=submission.workspace_id,
+    )
+
+    # Normalize and persist AI findings
+    for ai_f in ai_findings_raw:
+        finding_doc = Finding(
+            audit_run_id=audit_run.id,
+            category=ai_f.category,
+            severity=ai_f.severity,
+            source_engine="RAG_AI",
+            title=ai_f.title,
+            description=ai_f.explanation,
+            location={"claim_text": ai_f.claim_text},
+            evidence={
+                "source_citation": ai_f.source_citation,
+                "quote": ai_f.retrieved_evidence_quote,
+                "is_grounded": ai_f.is_grounded,
+                "confidence_score": ai_f.confidence_score,
+                "verdict": ai_f.verdict,
+            },
+            suggestion={
+                "action": "REWRITE_CLAIM",
+                "original": ai_f.claim_text,
+                "suggested_text": ai_f.suggested_correction,
+            } if ai_f.suggested_correction else None,
+            status="OPEN",
+        )
+        await finding_doc.insert()
+
+        # Attach Evidence Passage
+        if ai_f.retrieved_evidence_quote or ai_f.source_citation:
+            ev_doc = FindingEvidence(
+                finding_id=finding_doc.id,
+                source_type="GUIDELINE_CHUNK" if "guideline" in (ai_f.source_citation or "").lower() else "APPROVED_FACT",
+                source_version=1,
+                quote=ai_f.retrieved_evidence_quote or "No verified evidence found in Brand Vault.",
+                location={"citation": ai_f.source_citation},
+            )
+            await ev_doc.insert()
+
+        findings.append(finding_doc)
+
+    # 4. Finalize AuditRun and Recompute Readiness Score
+    final_score = compute_readiness_score(findings)
+    audit_run.readiness_score = final_score
+    audit_run.ai_status = ai_status
+    audit_run.model_identifier = "gemini-2.5-flash"
+    if ai_err:
+        audit_run.error_code = ai_err
+    await audit_run.save()
+
+    # Update Submission status
+    has_blocking = any(f.severity in ["CRITICAL", "HIGH"] for f in findings)
+    if has_blocking:
+        submission.status = "NEEDS_CHANGES"
+    elif final_score >= 85:
+        submission.status = "PENDING_REVIEW"
+    await submission.save()
+
+    # 5. Record SHA-256 Chained Audit Event
     await record_audit_event(
         workspace_id=submission.workspace_id,
         actor_user_id=current_user.id,
         entity_type="AUDIT_RUN",
         entity_id=audit_run.id,
-        action="DETERMINISTIC_AUDIT_COMPLETED",
+        action="FULL_AUDIT_COMPLETED",
         metadata_json={
             "submission_id": submission.id,
             "revision_number": latest_rev.revision_number,
-            "readiness_score": audit_run.readiness_score,
+            "readiness_score": final_score,
             "total_findings": len(findings),
+            "deterministic_findings_count": len([f for f in findings if f.source_engine == "DETERMINISTIC"]),
+            "ai_findings_count": len([f for f in findings if f.source_engine == "RAG_AI"]),
             "critical_count": sum(1 for f in findings if f.severity == "CRITICAL"),
             "high_count": sum(1 for f in findings if f.severity == "HIGH"),
         },
