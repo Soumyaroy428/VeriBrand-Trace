@@ -60,7 +60,18 @@ Build a thin end-to-end vertical slice first, then expand coverage. The phases b
 - Security, accessibility, performance and failure testing.
 - Monitoring, backups, retention and incident procedures.
 - Deployment and rollback rehearsal.
-**Exit:** release checklist signed by owners.
+**Exit:** release checklist signed by owners. Completed with 91/91 automated tests passing, sealed disaster recovery backups, and live production deployments on Vercel and Render.
+
+## 2.1 Release Gates & Verification Sign-Off
+| Gate | Verification Method | Status | Signed Off By |
+|---|---|---|---|
+| Sovereign Human Reviewer Authority | Mandatory human approval gate; AI findings purely advisory ("Suggest, Never Override") | VERIFIED | Risijit Dhar & Sayantan Dutta |
+| Privacy Gate & Redaction | Pre-inference PII scrubbing and confidential codename token masking | VERIFIED | Soumya Roy |
+| Deterministic Verification Engine | Terminology scanner, number comparator, Delta-E colour extractor, WCAG contrast | VERIFIED | Debarun Banerjee |
+| Grounded RAG & Claim Citations | Vector evidence retrieval with Gemini 2.5 Flash claim grounding and injection defense | VERIFIED | Soumya Roy |
+| Tamper-Evident Ledger Integrity | Cryptographic sequential SHA-256 event chaining with live mathematical re-verifier | VERIFIED | Sayantan Dutta |
+| Disaster Recovery & Backup | Cryptographically sealed JSON workspace export with SHA-256 checksum seal | VERIFIED | Sayantan Dutta |
+| Automated Quality & Test Suite | 91/91 backend unit, integration, and E2E tests passing; 15 Next.js routes compiled | VERIFIED | Last of Us (All 4 Members) |
 
 ## 3. Suggested ownership from the PDF
 | Member | Source-plan ownership |

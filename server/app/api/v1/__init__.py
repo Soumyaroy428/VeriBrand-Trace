@@ -10,6 +10,7 @@ from app.api.v1.audits import router as audits_router
 from app.api.v1.reviews import router as reviews_router
 from app.api.v1.audit_trail import router as audit_trail_router
 from app.api.v1.batches import router as batches_router
+from app.api.v1.operations import router as operations_router
 
 api_v1_router = APIRouter()
 api_v1_router.include_router(health_router, prefix="/health", tags=["Health"])
@@ -21,6 +22,7 @@ api_v1_router.include_router(audits_router, tags=["Audits & Deterministic Findin
 api_v1_router.include_router(reviews_router, tags=["Reviewer Sign-off & Governance"])
 api_v1_router.include_router(audit_trail_router, prefix="/workspaces", tags=["Audit Trail & Security"])
 api_v1_router.include_router(batches_router, tags=["Campaign Batch Processing"])
+api_v1_router.include_router(operations_router, tags=["System Operations & Disaster Recovery"])
 
 
 

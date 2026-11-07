@@ -41,51 +41,9 @@ from app.services.ai_claim_verifier import ai_claim_verifier
 from app.services.diff_engine import diff_engine
 from app.services.storage import storage_service
 from app.services.privacy import privacy_service
+from app.services.audit_verifier import record_audit_event
 
 router = APIRouter()
-
-
-async def record_audit_event(
-    workspace_id: str,
-    actor_user_id: str,
-    entity_type: str,
-    entity_id: str,
-    action: str,
-    metadata_json: dict,
-) -> AuditEvent:
-    """Helper to append an immutable, SHA-256 chained audit event."""
-    created_at_now = datetime.now(timezone.utc)
-    created_at_iso = created_at_now.isoformat()
-
-    last_event = await AuditEvent.find(
-        AuditEvent.workspace_id == workspace_id
-    ).sort("-created_at").first_or_none()
-    previous_hash = last_event.event_hash if last_event else None
-
-    event_hash = AuditEvent.calculate_hash(
-        workspace_id=workspace_id,
-        actor_user_id=actor_user_id,
-        entity_type=entity_type,
-        entity_id=entity_id,
-        action=action,
-        metadata_json=metadata_json,
-        previous_hash=previous_hash,
-        created_at_iso=created_at_iso,
-    )
-
-    audit_entry = AuditEvent(
-        workspace_id=workspace_id,
-        actor_user_id=actor_user_id,
-        entity_type=entity_type,
-        entity_id=entity_id,
-        action=action,
-        metadata_json=metadata_json,
-        previous_hash=previous_hash,
-        event_hash=event_hash,
-        created_at=created_at_now,
-    )
-    await audit_entry.insert()
-    return audit_entry
 
 
 async def build_audit_run_response(audit_run: AuditRun) -> AuditRunResponse:
