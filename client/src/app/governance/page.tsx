@@ -305,6 +305,14 @@ export default function GovernanceInsightsPage() {
               <p className="text-xs text-slate-300 leading-relaxed">
                 Every submission approval, revision hash, and reviewer decision is cryptographically chained. Compliance certificates can be independently authenticated by third parties without database access.
               </p>
+              <div className="pt-1">
+                <Link
+                  href="/audit-trail"
+                  className="inline-flex items-center px-3 py-1.5 rounded-lg bg-teal-500 hover:bg-teal-400 text-slate-950 text-xs font-bold transition shadow-sm"
+                >
+                  <Lock className="w-3.5 h-3.5 mr-1.5" /> View Cryptographic Ledger & Posture
+                </Link>
+              </div>
             </div>
           </div>
         </div>

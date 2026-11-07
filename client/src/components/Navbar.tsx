@@ -14,6 +14,7 @@ import {
   ChevronDown,
   Building2,
   User,
+  Lock,
 } from "lucide-react";
 import { useAuth, RoleType } from "@/context/AuthContext";
 
@@ -94,6 +95,15 @@ export default function Navbar() {
             >
               <BarChart3 className="h-4 w-4 text-slate-400" />
               <span>Governance</span>
+            </Link>
+            <Link
+              href="/audit-trail"
+              className={`px-3 py-1.5 rounded-md transition flex items-center space-x-1.5 ${
+                pathname.startsWith("/audit-trail") ? "text-slate-950 bg-slate-100 font-semibold" : "hover:text-slate-900 hover:bg-slate-50"
+              }`}
+            >
+              <Lock className="h-4 w-4 text-slate-400" />
+              <span>Audit Ledger</span>
             </Link>
           </nav>
         </div>
