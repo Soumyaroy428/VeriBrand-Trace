@@ -175,3 +175,4 @@ class PrivacyGateService:
 
 # Singleton instance
 privacy_service = PrivacyGateService()
+

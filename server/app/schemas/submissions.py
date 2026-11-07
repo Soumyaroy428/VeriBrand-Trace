@@ -76,3 +76,4 @@ class SubmissionListResponse(BaseModel):
 class SubmissionDetailResponse(BaseModel):
     submission: SubmissionResponse
     revisions: List[SubmissionRevisionResponse]
+

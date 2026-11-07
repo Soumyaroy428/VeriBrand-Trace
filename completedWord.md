@@ -170,33 +170,47 @@
 - **Vercel Production Deployment:**
   - Deployed to dedicated project: `https://veribrand-trace.vercel.app` (Verified HTTP 200 OK on `/audits` and `/audits/new`).
 
-- **Guideline Document Ingestion & Chunking (`server/app/api/v1/brand_vault.py`):**
-  - Implemented guideline document registration with SHA-256 content hashing (`GuidelineDocument`).
-  - Automated paragraph chunking generating vector evidence passages (`GuidelineChunk`) with token count and section headings.
-  - Chunk inspection endpoint (`GET /workspaces/{id}/guidelines/{id}/chunks`) for grounded evidence verification.
-- **Approved Fact Registry:**
-  - Full CRUD with optimistic locking and automatic version incrementing (`version: 1 -> 2`) on updates.
-  - Soft revocation (`status: REVOKED`) preserving audit history.
-  - Strict tenant isolation: facts scoped to `workspace_id`.
-- **Deterministic Terminology Rules:**
-  - Management of `BANNED`, `PREFERRED`, and `REPLACEMENT` rules.
-  - Granular matching parameters: `case_sensitive`, `whole_word`, and `severity` (`CRITICAL`, `HIGH`, `MEDIUM`, `LOW`, `INFORMATIONAL`).
-  - Deactivation endpoint marking rules inactive without data loss.
-- **Visual Standards & Brand Assets:**
-  - Visual standards rules supporting `COLOR_PALETTE`, `LOGO_CLEARSPACE`, and `CONTRAST_RATIO` with CIEDE2000 Delta-E tolerances and minimum WCAG contrast ratios.
-  - Digital brand assets registry (`LOGO`, `ICON`, `COLOR_SWATCH`, `DOCUMENT`) with storage keys and file checksums.
-- **Cryptographic Audit Event Chaining:**
-  - Every Brand Vault mutation (guideline ingest, fact create/update/revoke, terminology add/deactivate, visual rule create/deactivate, asset register) writes an append-only `AuditEvent` with SHA-256 hash chaining to the workspace's audit log.
-- **Workspace RBAC Enforcement:**
-  - Read endpoints accessible to all workspace members (`CREATOR`, `REVIEWER`, `GOVERNANCE_ADMIN`).
-  - Mutation endpoints strictly restricted to `GOVERNANCE_ADMIN` (Creators & Reviewers receive 403 `INSUFFICIENT_PERMISSIONS`).
-- **Frontend Brand Vault Dashboard (`client/src/app/brand-vault/page.tsx`):**
-  - 5 interactive tabs: Guidelines, Approved Facts, Terminology Rules, Visual Standards, Brand Assets.
-  - Role-aware permissions: Governance Admins can add facts/rules via an accessible modal; Creators/Reviewers see an informational read-only badge.
-  - Live API integration with pre-seeded fallback for instant exploration.
-  - Next.js production build verified: 8/8 static routes generated cleanly.
-- **Automated Test Suite & Verification (`server/tests/test_brand_vault.py`):**
-  - 8 automated tests passing: guideline ingestion & chunking, fact versioning, terminology CRUD, visual rules, summary metrics, RBAC enforcement, workspace isolation, and SHA-256 audit chaining.
-  - Unified backend test suite: **28/28 tests passing (100% pass rate)**.
+---
+
+### 7. Checkpoint 6: Deterministic Verification Engine (COMPLETED, COMMITTED & DEPLOYED)
+- **Color Mathematics & Accessibility Engine (`server/app/services/color_math.py`):**
+  - Bidirectional sRGB, CIE XYZ (D65 illuminant, 2° observer), and CIE L*a*b* transformations.
+  - Mathematically reproducible ISO/CIE 11664-6:2014 **CIEDE2000 (Delta-E 2000)** color distance calculation down to 4 decimal places with hue rotation and discontinuity handling.
+  - Standard Euclidean CIE76 Delta-E formula.
+  - WCAG 2.1 relative luminance and contrast ratio calculations ($L = 0.2126 R + 0.7152 G + 0.0722 B$), verifying 4.5:1 (normal text) and 3.0:1 (large text / graphical elements).
+- **Computer Vision & Image Analysis (`server/app/services/image_analysis.py`):**
+  - Dominant color extraction using FASTOCTREE quantization with percentage prominence calculation.
+  - Image contrast evaluation across primary foreground and background color clusters.
+  - OCR text extraction service with confidence scoring and fallback handling.
+- **Unified Deterministic Compliance Orchestration (`server/app/services/deterministic_engine.py`):**
+  - **Banned Terminology Scanner:** Evaluates active `BANNED` rules with whole-word boundary (`\b`) enforcement and case-insensitivity controls, generating `REMOVE_TERM` suggestions.
+  - **Preferred Terminology Scanner:** Evaluates `PREFERRED` and `REPLACEMENT` rules, producing intent-preserving `REPLACE_TERM` suggestions.
+  - **Approved Numeric Fact Comparison:** Scans claims for metrics (uptime, percentages, figures, currencies) and cross-checks against active `ApprovedFact` items, flagging discrepancies with `ALIGN_WITH_APPROVED_FACT` suggestions.
+  - **Visual Color Standards & Delta-E Tolerance:** Inspects image submissions against workspace `VisualRule` palettes, flagging off-brand shades exceeding permissible Delta-E thresholds ($\le 2.0$).
+  - **WCAG Contrast Ratio Rule:** Flags visual creative assets failing the minimum 4.5:1 accessibility threshold.
+  - **Multimodal OCR Audit:** Passes OCR-extracted text from image submissions into terminology and numeric fact engines.
+  - **Transparent Brand Readiness Score Formula:**
+    $$\text{Score} = \max\left(0,\, 100 - (25 \times N_{\text{crit}}) - (10 \times N_{\text{high}}) - (5 \times N_{\text{med}}) - (1 \times N_{\text{low}})\right)$$
+- **Audit Execution & Findings REST Endpoints (`server/app/api/v1/audits.py`):**
+  - `POST /submissions/{submission_id}/audits`: Triggers deterministic audit on latest revision, computes Brand Readiness Score, and chains SHA-256 `AuditEvent`.
+  - `GET /audits/{audit_id}`: Retrieves audit run status, summary, and severity distributions.
+  - `GET /audits/{audit_id}/findings`: Retrieves traceable findings with line/column coordinates, evidence citations, and actionable suggestions.
+  - `GET /submissions/{submission_id}/latest-audit`: Retrieves most recent audit run and findings for a submission.
+- **Frontend Audit Results & Findings View (`client/`):**
+  - **Detailed Audit View (`client/src/app/audits/[id]/page.tsx`):**
+    - Large Brand Readiness Score gauge with dynamic color feedback ($\ge 85$ Green, $70-84$ Amber, $< 70$ Red) and deduction formula disclosure.
+    - Severity breakdown cards (Critical, High, Medium, Low).
+    - Category & severity filter bar (Terminology, Fact Check, Color Compliance, Contrast).
+    - Interactive Violation Cards with rule citations, exact locations, and one-click "Copy Suggestion" actions.
+    - Side-by-side tabs for traceable findings vs. raw and sanitized Privacy Gate content streams.
+  - **Submissions Dashboard Updates (`client/src/app/audits/page.tsx`):**
+    - Integrated direct "Audit Results" link in actions column.
+  - Next.js production build: **10/10 routes generated cleanly with zero type errors**.
+- **Automated Test Suite & Verification (`server/tests/test_deterministic_engine.py`):**
+  - 8 automated tests: hex/RGB conversions, WCAG contrast reproducibility, CIEDE2000 reproducibility, readiness score formula, banned and preferred terminology detection, numeric fact discrepancy detection, visual Delta-E and contrast compliance, and full end-to-end API audit execution.
+  - Unified backend test suite: **52/52 tests passing (100% pass rate)**.
+- **Vercel Production Deployment:**
+  - Deployed to dedicated project: `https://veribrand-trace.vercel.app` (Verified HTTP 200 OK on `/audits` and `/audits/[id]`).
+
 
 

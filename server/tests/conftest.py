@@ -28,3 +28,4 @@ async def setup_test_db():
     await init_db(client=mock_client, db_name="test_unified_db")
     yield
     await close_db()
+

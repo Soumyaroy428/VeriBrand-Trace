@@ -376,12 +376,19 @@ export default function SubmissionsDashboard() {
                       {new Date(sub.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 text-right space-x-2">
+                      <Link
+                        href={`/audits/${sub.id}`}
+                        className="inline-flex items-center text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 px-3 py-1.5 rounded-md transition shadow-sm"
+                      >
+                        <FileCheck className="w-3.5 h-3.5 mr-1" />
+                        Audit Results
+                      </Link>
                       <button
                         onClick={() => setSelectedSub(sub)}
                         className="inline-flex items-center text-xs font-medium text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-2.5 py-1.5 rounded-md transition"
                       >
                         <Eye className="w-3.5 h-3.5 mr-1" />
-                        Inspect Gate
+                        Privacy Gate
                       </button>
                     </td>
                   </tr>

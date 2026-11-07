@@ -140,3 +140,4 @@ class ExtractionService:
 
 # Singleton instance
 extraction_service = ExtractionService()
+
