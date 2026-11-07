@@ -418,6 +418,33 @@ class ComplianceCertificate(Document):
         ]
 
 
+# 20. Batch Audit Run (Campaign Multi-Item Processing)
+class BatchAudit(Document):
+    id: str = Field(default_factory=generate_uuid)
+    workspace_id: str
+    title: str
+    campaign_tag: Optional[str] = None
+    created_by: str
+    status: str = "PENDING"  # PENDING, PROCESSING, COMPLETED, FAILED
+    submission_ids: List[str] = Field(default_factory=list)
+    total_items: int = 0
+    completed_items: int = 0
+    aggregate_score: float = 0.0
+    critical_violations: int = 0
+    warning_violations: int = 0
+    info_violations: int = 0
+    campaign_rating: str = "PENDING_AUDIT"  # CAMPAIGN_READY, REQUIRES_REMEDIATION, CRITICAL_RISK
+    created_at: datetime = Field(default_factory=utc_now)
+    updated_at: datetime = Field(default_factory=utc_now)
+
+    class Settings:
+        name = "batch_audits"
+        indexes = [
+            IndexModel([("workspace_id", ASCENDING), ("created_at", ASCENDING)]),
+            IndexModel([("campaign_tag", ASCENDING)]),
+        ]
+
+
 # All Document models registered for Beanie initialization
 ALL_MODELS = [
     User,
@@ -439,5 +466,6 @@ ALL_MODELS = [
     Approval,
     AuditEvent,
     ComplianceCertificate,
+    BatchAudit,
 ]
 

@@ -15,6 +15,7 @@ import {
   Building2,
   User,
   Lock,
+  Boxes,
 } from "lucide-react";
 import { useAuth, RoleType } from "@/context/AuthContext";
 
@@ -104,6 +105,15 @@ export default function Navbar() {
             >
               <Lock className="h-4 w-4 text-slate-400" />
               <span>Audit Ledger</span>
+            </Link>
+            <Link
+              href="/batches"
+              className={`px-3 py-1.5 rounded-md transition flex items-center space-x-1.5 ${
+                pathname.startsWith("/batches") ? "text-slate-950 bg-slate-100 font-semibold" : "hover:text-slate-900 hover:bg-slate-50"
+              }`}
+            >
+              <Boxes className="h-4 w-4 text-slate-400" />
+              <span>Campaign Batches</span>
             </Link>
           </nav>
         </div>

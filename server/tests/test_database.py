@@ -49,8 +49,8 @@ async def setup_test_db():
 
 @pytest.mark.asyncio
 async def test_models_registration():
-    """Verify that all 19 Beanie document models are properly registered."""
-    assert len(ALL_MODELS) == 19
+    """Verify that all 20 Beanie document models are properly registered."""
+    assert len(ALL_MODELS) == 20
     for model in ALL_MODELS:
         assert hasattr(model, "id")
         assert hasattr(model, "Settings")
